@@ -163,7 +163,7 @@ export default class Signup extends React.Component<Props, State> {
             returnKeyType="done"
             returnKeyLabel="Submit"
             keyboardType="default"
-          />
+          /> 
           <TouchableOpacity
             style={styles.eye}
             onPress={() => this.showPassword(!this.state.showpassword)}>
