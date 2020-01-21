@@ -41,7 +41,7 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
           style={styles.List}
           onPress={() => this.props.chat(this.props.id)}>
           <Text style={styles.textEmail}>{this.props.email}</Text>
-          <Text style={styles.message}>{this.props.message}</Text>
+          {/* <Text style={styles.message}>{this.props.message}</Text> */}
         </TouchableOpacity>
         {/* <View style={styles.lastMessage}>
           <Text style={styles.name}>{this.props.name}</Text>

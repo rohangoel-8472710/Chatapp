@@ -42,5 +42,22 @@ const Styles = StyleSheet.create({
   message: {
     fontSize: vw(20),
   },
+  centerNoChats: {
+    marginLeft: vw(-40)
+},
+noChatImage: {
+  height: vh(180),
+  width: vh(220),
+  alignSelf: 'center',
+  marginTop: vh(120),
+},
+noChat: {
+  alignSelf: 'center',
+  marginTop: vh(30),
+  fontWeight: '700',
+  fontSize: vh(25),
+  color: Colors.pinkishGrey,
+  marginLeft: vw(25)
+},
 });
 export default Styles;

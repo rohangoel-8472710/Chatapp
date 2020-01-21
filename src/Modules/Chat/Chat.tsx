@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import Firebaseservices from '../../utils/FirebaseServices';
+import { TouchableOpacityProps,TextStyle,ViewStyle, } from 'react-native';
 export interface Props {
   navigation: any;
   //message:string

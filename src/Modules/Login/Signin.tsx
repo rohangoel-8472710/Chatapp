@@ -185,9 +185,9 @@ export default class Signin extends React.Component<Props, State> {
             activeOpacity={0.8}>
             <LinearGradient
               style={styles.submitButton}
-              colors={['#01a7a3','#66eb8f']}
+              colors={['#01a7a3', '#66eb8f']}
               start={{x: 0.0, y: 0.25}}
-              end={{x: 0.5 ,y: 1}}>
+              end={{x: 0.5, y: 1}}>
               <Text style={styles.ButtonText}>Submit</Text>
             </LinearGradient>
           </TouchableOpacity>
