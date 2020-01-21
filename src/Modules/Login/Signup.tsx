@@ -87,11 +87,16 @@ export default class Signup extends React.Component<Props, State> {
       uid: data.user.uid,
     });
     console.warn('Login successfull');
-    Firebaseservices.writedata(data.user.uid, this.state.email);
+    Firebaseservices.writedata(
+      data.user.uid,
+      this.state.email,
+      this.state.sourceimg,
+    );
     this.props.navigation.navigate('Chatlist', {
       name: this.state.name,
       email: this.state.email,
       uid: this.state.uid,
+      Avatar: this.state.sourceimg,
     });
   };
   loginfailed = () => {
@@ -105,6 +110,14 @@ export default class Signup extends React.Component<Props, State> {
   render() {
     return (
       <ScrollView style={styles.main}>
+        <TouchableOpacity
+          style={styles.backview}
+          onPress={() => this.props.navigation.goBack()}>
+          <Image source={Images.BackButton}
+           style={styles.backButtonImage}
+          />
+           <Text style={styles.signin}>Sign In</Text>
+          </TouchableOpacity>
         <View style={styles.signUP}>
           <Text style={styles.signUpText}>Sign Up</Text>
           <Image source={Images.icSlection} style={styles.icSlection} />
@@ -163,7 +176,7 @@ export default class Signup extends React.Component<Props, State> {
             returnKeyType="done"
             returnKeyLabel="Submit"
             keyboardType="default"
-          /> 
+          />
           <TouchableOpacity
             style={styles.eye}
             onPress={() => this.showPassword(!this.state.showpassword)}>
@@ -175,13 +188,13 @@ export default class Signup extends React.Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.Button} onPress={() => this.onsignup}>
+        <TouchableOpacity style={styles.Button} onPress={() => this.onsignup()}>
           <Text style={styles.ButtonText}>Signup</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.Button}
           onPress={() => this.onImageUpload()}>
-          <Text style={styles.ButtonText}>Upload Avatar</Text>
+          <Text style={styles.ButtonText}>Upload Image</Text>
         </TouchableOpacity>
       </ScrollView>
     );

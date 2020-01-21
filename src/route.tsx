@@ -13,6 +13,10 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'Signin',
+    defaultNavigationOptions:{
+        headerShown:false
+    }
+  
   },
 );
 export default createAppContainer(AppNavigator);

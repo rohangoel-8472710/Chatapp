@@ -100,8 +100,8 @@ class Firebaseservices {
       .ref('allusers/')
       .on('child_added', snapshot => callback(snapshot.val()));
   }
-  writedata(id: string, email: string) {
-    const userDetails = {id: id, email: email};
+  writedata(id: string, email: string, image: string) {
+    const userDetails = {id: id, email: email, image: image};
     firebase
       .database()
       .ref('allusers/')
@@ -130,5 +130,31 @@ class Firebaseservices {
   //     .ref('allusers/')
   //     .push(email);
   // };
+
+  uploadImage = (uri: string, email: string) => {
+    try {
+      const imagedata = {uri:uri,email:email}
+      firebase
+        .storage()
+        .ref('Images/')
+        .push(imagedata);
+    } catch (err) {}
+  };
+
+  //       const task = ref.putFile(uri);
+  //       console.log('Here Task=>', task);
+  //       //@ts-ignore
+  //       let imageURL = await new Promise((resolve, reject) => {
+  //         task.then(snap => {
+  //           ref.getDownloadURL().then(data => {
+  //             resolve(data);
+  //           });
+  //         });
+  //       });
+  //       return imageURL;
+  //     } catch (err) {
+  //       console.log('uploadImage try/catch error: ' + err.message);
+  //     }
+  //   };
 }
 export default new Firebaseservices();

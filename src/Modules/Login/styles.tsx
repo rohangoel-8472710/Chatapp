@@ -22,20 +22,20 @@ const Styles = StyleSheet.create({
     fontSize: vh(15),
   },
   input: {
-    width: vw(320),
-    height: vh(40),
+    width: vw(315),
+    height: vh(45),
     backgroundColor: Colors.textInput,
     marginTop: vh(25),
     padding: vw(10),
-    borderRadius: vh(10),
+    borderRadius: vh(5),
     fontSize: vh(12),
     borderWidth: vw(1),
-    marginLeft: vw(25),
+    left: vw(30),
   },
   eye: {
     position: 'absolute',
     top: vh(40),
-    right: vw(35),
+    right: vw(45),
   },
   eyeOpen: {
     height: vw(15),
@@ -64,10 +64,10 @@ const Styles = StyleSheet.create({
   Button: {
     padding: vw(10),
     margin: vw(15),
-    // marginTop:vh(10),
+    //marginTop: vh(30),
     height: vh(40),
-    width:vw(320),
-    left:vw(10),
+    width: vw(320),
+    left: vw(10),
     borderRadius: vh(10),
     justifyContent: 'center',
     alignItems: 'center',
@@ -85,9 +85,55 @@ const Styles = StyleSheet.create({
     marginTop: vh(20),
     left: vw(125),
   },
-  signIN:{
-    marginTop: vh(10),
+  signIN: {
+    marginTop: vh(70),
     left: vw(30),
   },
+  imagestyle: {
+    height: vh(150),
+    width: vw(110),
+    position: 'absolute',
+    right: vw(0),
+    top: vw(0),
+  },
+  signUPbtn: {
+    position: 'absolute',
+    right: vw(10),
+    top: vh(63),
+    zIndex: 1,
+  },
+  signUpTextbtn: {
+    color: Colors.shembe,
+    fontSize: vh(18),
+    fontWeight: 'bold',
+  },
+  submitButton: {
+    padding: vw(10),
+    marginTop: vh(30),
+    height: vh(45),
+    width: vw(315),
+    left: vw(30),
+    borderRadius: vh(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.shembe,
+  },
+  backview: {
+    marginTop: vh(40),
+    left: vw(15),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  detailsTextsignin: {
+    fontSize: vh(15),
+    marginTop: vh(15),
+  },
+  backButtonImage: {
+    height:vw(20),
+    width:vw(20),
+  },
+  signin:{
+    fontSize:vh(17),
+  }
 });
 export default Styles;

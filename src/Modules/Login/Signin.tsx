@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {Text, View, TextInput, TouchableOpacity, Image} from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  SafeAreaView,
+} from 'react-native';
 //import {styles} from '../../styles/styles';
 import styles from '../Login/styles';
 import Images from '../../Constants/Images';
@@ -16,6 +23,7 @@ interface State {
   password: string;
   message: string;
   showpassword: boolean;
+  avatar: string;
 }
 export default class Signin extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -27,6 +35,7 @@ export default class Signin extends React.Component<Props, State> {
       uid: '',
       message: '',
       showpassword: false,
+      avatar: '',
     };
   }
   showPassword = (value: boolean) => {
@@ -50,6 +59,7 @@ export default class Signin extends React.Component<Props, State> {
       name: this.state.name,
       email: this.state.email,
       uid: this.state.uid,
+      avatar: this.state.avatar,
     });
   };
   loginfailed = () => {
@@ -62,67 +72,74 @@ export default class Signin extends React.Component<Props, State> {
   render() {
     return (
       <View style={styles.main}>
-        {/* <TouchableOpacity
+        {/* <Image source={Images.SignUpGraphic} style={styles.imagestyle} /> */}
+        <TouchableOpacity
           style={styles.signUPbtn}
           onPress={() => this.props.navigation.navigate('SignUp')}>
           <Text style={styles.signUpTextbtn}>Sign Up</Text>
-        </TouchableOpacity> */}
-        <View style={styles.signIN}>
-          <Text style={styles.signUpText}>Sign In</Text>
-          <Image source={Images.icSlection} style={styles.icSlection} />
-          <Text style={styles.detailsText}> Welcome to ChatApplication </Text>
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          //placeholderTextColor="#9a73ef"
-          onChangeText={this.onChangeEmail}
-          autoCapitalize="none"
-        />
-        <View>
+        </TouchableOpacity>
+        <SafeAreaView>
+          <View style={styles.signIN}>
+            <Text style={styles.signUpText}>Sign In</Text>
+            <Image source={Images.icSlection} style={styles.icSlection} />
+            <Text style={styles.detailsTextsignin}>
+              Welcome to ChatApplication
+            </Text>
+          </View>
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="Email"
             //placeholderTextColor="#9a73ef"
-            onChangeText={this.onChangePassword}
+            onChangeText={this.onChangeEmail}
             autoCapitalize="none"
-            value={this.state.password}
-            keyboardAppearance="light"
-            secureTextEntry={!this.state.showpassword}
-            returnKeyType="done"
-            returnKeyLabel="Submit"
-            keyboardType="default"
           />
-          <TouchableOpacity
-            style={styles.eye}
-            onPress={() => this.showPassword(!this.state.showpassword)}>
-            <Image
-              source={
-                this.state.showpassword ? Images.eyeEnabled : Images.eyeDisabled
-              }
-              style={styles.eyeOpen}
+          <View>
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              //placeholderTextColor="#9a73ef"
+              onChangeText={this.onChangePassword}
+              autoCapitalize="none"
+              value={this.state.password}
+              keyboardAppearance="light"
+              secureTextEntry={!this.state.showpassword}
+              returnKeyType="done"
+              returnKeyLabel="Submit"
+              keyboardType="default"
             />
+            <TouchableOpacity
+              style={styles.eye}
+              onPress={() => this.showPassword(!this.state.showpassword)}>
+              <Image
+                source={
+                  this.state.showpassword
+                    ? Images.eyeEnabled
+                    : Images.eyeDisabled
+                }
+                style={styles.eyeOpen}
+              />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() =>
+              Firebaseservices.onPressLogin(
+                this.state.email,
+                this.state.password,
+                this.loginsuccess,
+                this.loginfailed,
+              )
+            }
+            activeOpacity={0.8}>
+            <Text style={styles.ButtonText}>Submit</Text>
           </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={styles.Button}
-          onPress={() =>
-            Firebaseservices.onPressLogin(
-              this.state.email,
-              this.state.password,
-              this.loginsuccess,
-              this.loginfailed,
-            )
-          }
-          activeOpacity={0.8}>
-          <Text style={styles.ButtonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+          {/* <TouchableOpacity
           style={styles.Button}
           activeOpacity={0.8}
           onPress={() => this.props.navigation.navigate('SignUp')}>
           <Text style={styles.ButtonText}>Signup</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        </SafeAreaView>
       </View>
     );
   }

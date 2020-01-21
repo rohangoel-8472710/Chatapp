@@ -49,7 +49,7 @@ export default class Chatlist extends Component<Props, State> {
   }
 
   getnewdata = (data: any) => {
-    //console.warn(data);
+    // console.warn('data ',data);
     var arr: Array<any> = [];
     let tempArray = this.state.data;
     let indexToFind = tempArray.findIndex(
@@ -74,8 +74,9 @@ export default class Chatlist extends Component<Props, State> {
     );
     let chatRoomToFind = tempArray[indexToFind];
     this.setState({
-      lastmessagesearch: chatRoomToFind[1],
+      lastmessagesearch: chatRoomToFind,
     });
+    if (this.state.data !== null) {
     for (let i = 0; i < this.state.data.length; i++) {
       let message = this.state.lastmessagesearch;
       let keys = Object.keys(message);
@@ -86,7 +87,7 @@ export default class Chatlist extends Component<Props, State> {
           this.state.data[j][1].time = message[uidcheck].createdAt;
         }
       }
-    }
+    }}
   };
   // getdata = (data: any) => {
   //   var result = Object.keys(data).map(function(key) {
@@ -104,7 +105,7 @@ export default class Chatlist extends Component<Props, State> {
   renderData = (rowData: any) => {
     const {item} = rowData;
     // console.warn('rowData ', item.id)
-    //  console.warn(item['email'])
+    //  console.warn(item)
     return (
       this.state.showList && (
         <FlatlistData
@@ -137,15 +138,15 @@ export default class Chatlist extends Component<Props, State> {
   render() {
     return (
       <View style={styles.parent}>
-        {/* <View  > */}
+        
         <TouchableOpacity style={styles.addicon} onPress={this.displaylist}>
           <Text style={styles.plustyle}>+</Text>
         </TouchableOpacity>
-        {/* </View> */}
+     
         <FlatList
           data={this.state.list}
-          renderItem={this.renderData}
           keyExtractor={(item, index) => index.toString()}
+          renderItem = {this.renderData}         
         />
       </View>
     );
