@@ -109,15 +109,13 @@ export default class Signup extends React.Component<Props, State> {
 
   render() {
     return (
-      <ScrollView style={styles.main}>
+      <View style={styles.main}>
         <TouchableOpacity
           style={styles.backview}
           onPress={() => this.props.navigation.goBack()}>
-          <Image source={Images.BackButton}
-           style={styles.backButtonImage}
-          />
-           <Text style={styles.signin}>Sign In</Text>
-          </TouchableOpacity>
+          <Image source={Images.BackButton} style={styles.backButtonImage} />
+          <Text style={styles.signin}>Sign In</Text>
+        </TouchableOpacity>
         <View style={styles.signUP}>
           <Text style={styles.signUpText}>Sign Up</Text>
           <Image source={Images.icSlection} style={styles.icSlection} />
@@ -127,7 +125,7 @@ export default class Signup extends React.Component<Props, State> {
           </Text>
         </View>
 
-        <View>
+        <View style={styles.Uploadview}>
           <Image
             style={styles.uploadimage}
             resizeMode="contain"
@@ -137,10 +135,15 @@ export default class Signup extends React.Component<Props, State> {
                 : {uri: this.state.sourceimg}
             }
           />
+          <TouchableOpacity
+            style={styles.editimage}
+            onPress={() => this.onImageUpload()}>
+            <Image source={Images.EDIT} />
+          </TouchableOpacity>
         </View>
 
         <TextInput
-          style={styles.input}
+          style={styles.inputsignup}
           placeholder="Name"
           // placeholderTextColor="#9a73ef"
           onChangeText={this.onChangeName}
@@ -152,7 +155,7 @@ export default class Signup extends React.Component<Props, State> {
           keyboardType="default"
         />
         <TextInput
-          style={styles.input}
+          style={styles.inputsignup}
           placeholder="Email"
           // placeholderTextColor="#9a73ef"
           autoCapitalize="none"
@@ -165,7 +168,7 @@ export default class Signup extends React.Component<Props, State> {
         />
         <View>
           <TextInput
-            style={styles.input}
+            style={styles.inputsignup}
             placeholder="Password"
             // placeholderTextColor="#9a73ef"
             autoCapitalize="none"
@@ -188,15 +191,17 @@ export default class Signup extends React.Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.Button} onPress={() => this.onsignup()}>
+        <TouchableOpacity
+          style={styles.ButtonSignUp}
+          onPress={() => this.onsignup()}>
           <Text style={styles.ButtonText}>Signup</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.Button}
+        {/* <TouchableOpacity
+          style={styles.ButtonUploadIamge}
           onPress={() => this.onImageUpload()}>
           <Text style={styles.ButtonText}>Upload Image</Text>
-        </TouchableOpacity>
-      </ScrollView>
+        </TouchableOpacity> */}
+      </View>
     );
   }
 }

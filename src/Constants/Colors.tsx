@@ -6,6 +6,8 @@ const Colors = {
     weirdGreen: 'rgb(102, 235, 143)',
     fadedGray: 'rgb(140,140,140)',
     pinkishGrey: 'rgb(191,191,191)',
+    tealBlue:'rgb(1 ,167, 163)',
+    whiteborder:'rgb (244 244 244)',
 }
 
 export default Colors;

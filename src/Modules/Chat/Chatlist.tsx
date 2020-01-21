@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Text, View, FlatList, TouchableOpacity} from 'react-native';
 import Firebaseservices from '../../utils/FirebaseServices';
-import {styles} from '../../styles/styles';
+// import {styles} from '../../styles/styles';
+import styles from '../Chat/styles';
 import FlatlistData from './FlatlistData';
 
 export interface Props {
@@ -77,17 +78,18 @@ export default class Chatlist extends Component<Props, State> {
       lastmessagesearch: chatRoomToFind,
     });
     if (this.state.data !== null) {
-    for (let i = 0; i < this.state.data.length; i++) {
-      let message = this.state.lastmessagesearch;
-      let keys = Object.keys(message);
-      let uidcheck = keys[i];
-      for (let j = 0; j < this.state.data.length; j++) {
-        if (keys[i] === this.state.data[j][0]) {
-          this.state.data[j][1].message = message[uidcheck].text;
-          this.state.data[j][1].time = message[uidcheck].createdAt;
+      for (let i = 0; i < this.state.data.length; i++) {
+        let message = this.state.lastmessagesearch;
+        let keys = Object.keys(message);
+        let uidcheck = keys[i];
+        for (let j = 0; j < this.state.data.length; j++) {
+          if (keys[i] === this.state.data[j][0]) {
+            this.state.data[j][1].message = message[uidcheck].text;
+            this.state.data[j][1].time = message[uidcheck].createdAt;
+          }
         }
       }
-    }}
+    }
   };
   // getdata = (data: any) => {
   //   var result = Object.keys(data).map(function(key) {
@@ -138,15 +140,14 @@ export default class Chatlist extends Component<Props, State> {
   render() {
     return (
       <View style={styles.parent}>
-        
         <TouchableOpacity style={styles.addicon} onPress={this.displaylist}>
           <Text style={styles.plustyle}>+</Text>
         </TouchableOpacity>
-     
+
         <FlatList
           data={this.state.list}
           keyExtractor={(item, index) => index.toString()}
-          renderItem = {this.renderData}         
+          renderItem={this.renderData}
         />
       </View>
     );

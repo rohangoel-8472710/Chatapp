@@ -6,6 +6,8 @@ const Images = {
   PROFILE: require('../Assets/Images/icPicPlaceholder.png'),
   SignUpGraphic: require('../Assets/Images/icSignUpGraphic.png'),
   BackButton: require('../Assets/Images/icBackBtn.png'),
+  EDIT:require('../Assets/Images/icEdit.png'),
+  ADD:require('../Assets/Images/Add.png')
 };
 
 export default Images;
