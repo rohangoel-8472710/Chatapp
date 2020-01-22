@@ -63,7 +63,7 @@ export default class Signup extends React.Component<Props, State> {
       this.state.sourceimg,
     );
     try {
-      const user = {
+      let user = {
         name: this.state.name,
         email: this.state.email,
         password: this.state.password,
@@ -87,11 +87,13 @@ export default class Signup extends React.Component<Props, State> {
       uid: data.user.uid,
     });
     console.warn('Login successfull');
-    Firebaseservices.writedata(
-      data.user.uid,
-      this.state.email,
-      this.state.sourceimg,
-    );
+    let user = {
+      uid: data.user.uid,
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+    };
+    Firebaseservices.writedata(user);
     this.props.navigation.navigate('Chatlist', {
       name: this.state.name,
       email: this.state.email,

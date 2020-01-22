@@ -44,14 +44,13 @@ class Firebaseservices {
       .then(loginsuccess, loginfailed);
   };
   onPressLogin = (
-    email: string,
-    password: string,
+    user:any,
     loginsuccess: any,
     loginfailed: any,
   ) => {
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(user.email, user.password)
       .then(loginsuccess, loginfailed);
   };
 
@@ -62,19 +61,34 @@ class Firebaseservices {
       const message = {text, user, createdAt: new Date().getTime()};
       console.log('msg sended ', message);
 
-      // const userDetails = {id: id, email: email, message: message};
-      // console.warn(userDetails);
-      // firebase
-      //   .database()
-      //   .ref('Inbox/')
-      //   .push(userDetails);
-
+      //adding msg on send to sender inbox
       firebase
         .database()
-        .ref('Users/')
+        .ref('Inbox/' + user._id)
+        .child(user.roomID)
+        .set({
+          lastMsg: message.text,
+          createdAt: message.createdAt,
+          user: message.user,
+        });
+
+      //adding msg on send to reciever inbox
+      firebase
+        .database()
+        .ref('Inbox/' + user._id)
+        .child(user.roomID)
+        .set({
+          lastMsg: message.text,
+          createdAt: message.createdAt,
+          user: message.user,
+        });
+      firebase
+        .database()
+        .ref('Chatroom/' + user.roomID)
         .push(message);
     }
   };
+
   parse = (snapshot: any) => {
     const {timestamp: numberStamp, text, user} = snapshot.val();
     const {key: _id} = snapshot;
@@ -82,31 +96,36 @@ class Firebaseservices {
     const message = {_id, timestamp, text, user};
     return message;
   };
+
   refOn = (callback: any) => {
     firebase
       .database()
       .ref('Users/')
       .on('child_added', snapshot => callback(this.parse(snapshot)));
   };
-  // getList = (callback: any) => {
-  //   firebase
-  //     .database()
-  //     .ref('allusers/')
-  //     .on('child_added', (snapshot: any) => callback(snapshot.val()));
-  // };
+
+  getList = (callback: any) => {
+    firebase
+      .database()
+      .ref('allusers/')
+      .on('child_added', (snapshot: any) => callback(snapshot.val()));
+  };
+
   readUserData(callback: Function) {
     firebase
       .database()
       .ref('allusers/')
       .on('child_added', snapshot => callback(snapshot.val()));
   }
-  writedata(id: string, email: string, image: string) {
-    const userDetails = {id: id, email: email, image: image};
+
+  writedata(user:any) {
+    const userDetails = {id: user.id, email: user.email, imageURL: user.image,displayname:user.name};
     firebase
       .database()
       .ref('allusers/')
       .push(userDetails);
   }
+
   writeinboxdata(id: string, email: string, message: string) {
     const userDetails = {id: id, email: email, message: message};
     console.warn(userDetails);
@@ -115,14 +134,24 @@ class Firebaseservices {
       .ref('Inbox/')
       .push(userDetails);
   }
-  readInboxData(callback: Function) {
+
+  // readInboxData(callback: Function) {
+  //   firebase
+  //     .database()
+  //     .ref('Inbox/')
+  //     .once('value', function(snapshot: any) {
+  //       callback(snapshot.val());
+  //     });
+  // }
+  Inboxlist = (uid: string, callback: Function) => {
     firebase
       .database()
-      .ref('Inbox/')
-      .once('value', function(snapshot: any) {
+      .ref('Inbox/' + uid)
+      .on('value', function(snapshot: any) {
+        console.log(snapshot.val());
         callback(snapshot.val());
       });
-  }
+  };
 
   // getdata = (email: string) => {
   //   firebase
@@ -131,14 +160,20 @@ class Firebaseservices {
   //     .push(email);
   // };
 
-  uploadImage = (uri: string, email: string) => {
-    try {
-      const imagedata = {uri:uri,email:email}
-      firebase
-        .storage()
-        .ref('Images/')
-        .push(imagedata);
-    } catch (err) {}
+  uploadImage = (uid: string, path: any, callback: Function) => {
+   const image = firebase.storage().ref('Pic').child(uid);
+   return image.putFile(path,{contentType:'jpg'})
+    .then(()=>{
+      return image.getDownloadURL();
+    })
+    .then(url => {
+      console.log(url);
+      callback(url)
+    })
+    .catch(error => {
+      console.warn('Error uploading image: ', error);
+    });
+}
   };
 
   //       const task = ref.putFile(uri);
@@ -156,5 +191,5 @@ class Firebaseservices {
   //       console.log('uploadImage try/catch error: ' + err.message);
   //     }
   //   };
-}
+
 export default new Firebaseservices();

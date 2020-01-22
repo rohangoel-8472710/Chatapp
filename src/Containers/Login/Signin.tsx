@@ -43,10 +43,19 @@ export default class Signin extends React.Component<Props, State> {
       borderpassword: 0,
     };
   }
+  componentDidMount() {
+    Firebaseservices.initializeFireBase();
+  }
+
   showPassword = (value: boolean) => {
     this.setState({
       showpassword: value,
     });
+  };
+
+  onlogin = (email: string, password: string) => {
+    let user = {email: email, password: password};
+    Firebaseservices.onPressLogin(user, this.loginsuccess, this.loginfailed);
   };
 
   loginsuccess = (data: any) => {
@@ -174,14 +183,7 @@ export default class Signin extends React.Component<Props, State> {
           </View>
           <TouchableOpacity
             //style={styles.submitButton}
-            onPress={() =>
-              Firebaseservices.onPressLogin(
-                this.state.email,
-                this.state.password,
-                this.loginsuccess,
-                this.loginfailed,
-              )
-            }
+            onPress={() => this.onlogin(this.state.email, this.state.password)}
             activeOpacity={0.8}>
             <LinearGradient
               style={styles.submitButton}

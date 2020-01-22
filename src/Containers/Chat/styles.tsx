@@ -43,21 +43,34 @@ const Styles = StyleSheet.create({
     fontSize: vw(20),
   },
   centerNoChats: {
-    marginLeft: vw(-40)
+    marginLeft: vw(-40),
+  },
+  noChatImage: {
+    height: vh(148),
+    width: vh(182),
+    alignSelf: 'center',
+    marginTop: vh(120),
+  },
+  noChat: {
+    alignSelf: 'center',
+    marginTop: vh(30),
+    fontWeight: '700',
+    fontSize: vh(25),
+    color: Colors.pinkishGrey,
+    marginLeft: vw(25),
+  },
+  chats: {
+    fontSize: vh(25),
+    fontWeight: 'bold',
+    marginLeft: vw(15),
+    marginTop: vh(60)
 },
-noChatImage: {
-  height: vh(180),
-  width: vh(220),
-  alignSelf: 'center',
-  marginTop: vh(120),
+messageview:{
+  height:vh(40),
+  width:vw(30),
 },
-noChat: {
-  alignSelf: 'center',
-  marginTop: vh(30),
-  fontWeight: '700',
-  fontSize: vh(25),
-  color: Colors.pinkishGrey,
-  marginLeft: vw(25)
-},
+textname:{
+  fontSize:vw(15)
+}
 });
 export default Styles;
