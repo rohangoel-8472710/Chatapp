@@ -7,8 +7,9 @@ const Images = {
   SignUpGraphic: require('../Assets/Images/icSignUpGraphic.png'),
   BackButton: require('../Assets/Images/icBackBtn.png'),
   EDIT:require('../Assets/Images/icEdit.png'),
-  ADD:require('../Assets/Images/Add.png'),
-  noChat:require('../Assets/Images/icGraphicNoChat.png')
+  noChat:require('../Assets/Images/icGraphicNoChat.png'),
+  PLUS:require('../Assets/Images/plus.png'),
+  MINUS:require('../Assets/Images/minus.png')
 };
 
 export default Images;

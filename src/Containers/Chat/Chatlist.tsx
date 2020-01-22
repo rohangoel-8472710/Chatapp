@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, FlatList, TouchableOpacity, Image} from 'react-native';
 import Firebaseservices from '../../utils/FirebaseServices';
-// import {styles} from '../../styles/styles';
 import styles from '../Chat/styles';
 import FlatlistData from './FlatlistData';
 import InboxList from './InboxList';
@@ -11,7 +10,7 @@ export interface Props {
   uid: string;
   email: string;
   user: any;
-  updatedata: Function;
+  updateUserdetails: Function;
 }
 
 interface State {
@@ -20,7 +19,7 @@ interface State {
   uid: string;
   email: string;
   list: Array<any>;
-  showList: boolean;
+  Show: boolean;
   roomID: string;
   chatsDone: boolean;
   updatedData: any;
@@ -37,7 +36,7 @@ export default class Chatlist extends Component<Props, State> {
       uid: this.props.navigation.getParam('uid'),
       name: this.props.navigation.getParam('name'),
       email: this.props.navigation.getParam('email'),
-      showList: false,
+      Show: false,
       chatsDone: false,
       updatedData: [],
       chatEmpty: false,
@@ -83,7 +82,7 @@ export default class Chatlist extends Component<Props, State> {
       if (this.props.uid !== message.key) {
         newData = newData.concat(message);
       } else {
-        this.props.updatedata(message);
+        this.props.updateUserdetails(message);
       }
     });
     setTimeout(() => {
@@ -115,11 +114,16 @@ export default class Chatlist extends Component<Props, State> {
 
   //
   displaylist = () => {
-    this.setState({showList: true}, () => {
-      if (this.state.showList) {
-        this.getdata();
-      }
-    });
+    this.setState(
+      {
+        Show: !this.state.Show,
+      },
+      () => {
+        if (this.state.Show) {
+          this.getdata();
+        }
+      },
+    );
   };
 
   //
@@ -130,7 +134,7 @@ export default class Chatlist extends Component<Props, State> {
     } else {
       chatRoomId = this.props.uid.concat(user.key);
     }
-    this.setState({roomID: chatRoomId, showList: !this.state.showList});
+    this.setState({roomID: chatRoomId, Show: !this.state.Show});
     this.props.navigation.navigate('Chat', {
       roomID: chatRoomId,
       username: user.displayname,
@@ -253,8 +257,13 @@ export default class Chatlist extends Component<Props, State> {
   render() {
     return (
       <View style={styles.parent}>
-        <TouchableOpacity style={styles.addicon} onPress={this.displaylist}>
-          <Text style={styles.plustyle}>+</Text>
+        <TouchableOpacity
+          style={styles.addicon}
+          onPress={() => this.displaylist()}>
+          <Image
+            source={this.state.Show ? Images.MINUS : Images.PLUS}
+            style={styles.addimg}
+          />
         </TouchableOpacity>
         <Text style={styles.chats}>Chats</Text>
         {this.state.chatEmpty ? (
@@ -270,7 +279,7 @@ export default class Chatlist extends Component<Props, State> {
           />
         )}
 
-        {this.state.showList && (
+        {this.state.Show && (
           <FlatList
             data={this.state.list}
             keyExtractor={(item, index) => index.toString()}

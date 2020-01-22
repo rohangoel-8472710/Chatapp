@@ -1,16 +1,10 @@
 import { combineReducers } from "redux";
+import SignIn from '../Modules/Signin/Reducer';
+import Chatlist from '../Modules/Chatlist/Reducer';
 
-const initialState = {
-};
-
-
-const Reducer = (state = initialState, action: any ) => {
-    switch (action.type) {
-        default:
-            return state
-    }
-}
-
-export const reducer = combineReducers({
-    Reducer: Reducer
+const reducer = combineReducers({
+    SignIn,
+    Chatlist,
 });
+
+export default reducer;

@@ -8,13 +8,15 @@ import {
   SafeAreaView,
 } from 'react-native';
 //import {styles} from '../../styles/styles';
-import styles from '../Login/styles';
+import styles from './styles';
 import Images from '../../Constants/Images';
 import Firebaseservices from '../../utils/FirebaseServices';
 import LinearGradient from 'react-native-linear-gradient';
 import Colors from '../../Constants/Colors';
 export interface Props {
   navigation: any;
+  updateEmail: Function;
+  updateUid: Function;
 }
 
 interface State {
@@ -28,7 +30,7 @@ interface State {
   borderemail: number;
   borderpassword: number;
 }
-export default class Signin extends React.Component<Props, State> {
+export default class SignIn extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -45,6 +47,7 @@ export default class Signin extends React.Component<Props, State> {
   }
   componentDidMount() {
     Firebaseservices.initializeFireBase();
+    // console.warn('ok')
   }
 
   showPassword = (value: boolean) => {
@@ -59,10 +62,13 @@ export default class Signin extends React.Component<Props, State> {
   };
 
   loginsuccess = (data: any) => {
-    console.warn(data.user.uid);
-    this.setState({
-      uid: data.user.uid,
-    });
+    // console.warn(data.user.uid);
+    // this.setState({
+    //   uid: data.user.uid,
+    // });
+    // console.warn('ok')
+    this.props.updateEmail(this.state.email);
+    this.props.updateUid(data.user.uid);
     console.warn('Login successfull');
     // Firebaseservices.writeinboxdata(
     //   data.user.id,
@@ -142,6 +148,8 @@ export default class Signin extends React.Component<Props, State> {
               this.onChangeEmail();
             }}
             autoCapitalize="none"
+            onFocus={() => this.setState({ borderemail: 1 })}
+            onBlur={() => this.setState({ borderemail: 0 })}
           />
           <View>
             <TextInput
@@ -167,6 +175,8 @@ export default class Signin extends React.Component<Props, State> {
               returnKeyType="done"
               returnKeyLabel="Submit"
               keyboardType="default"
+              onFocus={() => this.setState({ borderpassword: 2 })}
+              onBlur={() => this.setState({ borderpassword: 0 })}
             />
             <TouchableOpacity
               style={styles.eyesignin}
@@ -193,12 +203,6 @@ export default class Signin extends React.Component<Props, State> {
               <Text style={styles.ButtonText}>Submit</Text>
             </LinearGradient>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-          style={styles.Button}
-          activeOpacity={0.8}
-          onPress={() => this.props.navigation.navigate('SignUp')}>
-          <Text style={styles.ButtonText}>Signup</Text>
-        </TouchableOpacity> */}
         </SafeAreaView>
       </View>
     );

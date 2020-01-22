@@ -63,14 +63,29 @@ const Styles = StyleSheet.create({
     fontSize: vh(25),
     fontWeight: 'bold',
     marginLeft: vw(15),
-    marginTop: vh(60)
-},
-messageview:{
-  height:vh(40),
-  width:vw(30),
-},
-textname:{
-  fontSize:vw(15)
-}
+    marginTop: vh(60),
+  },
+  messageview: {
+    height: vh(40),
+    width: vw(30),
+  },
+  textname: {
+    fontSize: vw(15),
+  },
+  addimg: {
+    height: vh(30),
+    width: vh(30),
+  },
+  profile: {
+    height: vw(50),
+    width: vw(50),
+    borderRadius: vw(25),
+  },
+  parentview: {
+    flex: 1,
+    borderWidth: vh(2),
+    alignItems: 'center',
+    padding: vh(10),
+  },
 });
 export default Styles;

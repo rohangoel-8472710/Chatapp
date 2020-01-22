@@ -43,11 +43,7 @@ class Firebaseservices {
       .createUserWithEmailAndPassword(email, password)
       .then(loginsuccess, loginfailed);
   };
-  onPressLogin = (
-    user:any,
-    loginsuccess: any,
-    loginfailed: any,
-  ) => {
+  onPressLogin = (user: any, loginsuccess: any, loginfailed: any) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(user.email, user.password)
@@ -118,8 +114,13 @@ class Firebaseservices {
       .on('child_added', snapshot => callback(snapshot.val()));
   }
 
-  writedata(user:any) {
-    const userDetails = {id: user.id, email: user.email, imageURL: user.image,displayname:user.name};
+  writedata(user: any) {
+    const userDetails = {
+      id: user.id,
+      email: user.email,
+      imageURL: user.image,
+      displayname: user.name,
+    };
     firebase
       .database()
       .ref('allusers/')
@@ -161,35 +162,39 @@ class Firebaseservices {
   // };
 
   uploadImage = (uid: string, path: any, callback: Function) => {
-   const image = firebase.storage().ref('Pic').child(uid);
-   return image.putFile(path,{contentType:'jpg'})
-    .then(()=>{
-      return image.getDownloadURL();
-    })
-    .then(url => {
-      console.log(url);
-      callback(url)
-    })
-    .catch(error => {
-      console.warn('Error uploading image: ', error);
-    });
-}
+    const image = firebase
+      .storage()
+      .ref('Pic')
+      .child(uid);
+    return image
+      .putFile(path, {contentType: 'jpg'})
+      .then(() => {
+        return image.getDownloadURL();
+      })
+      .then(url => {
+        console.log(url);
+        callback(url);
+      })
+      .catch(error => {
+        console.warn('Error uploading image: ', error);
+      });
   };
+}
 
-  //       const task = ref.putFile(uri);
-  //       console.log('Here Task=>', task);
-  //       //@ts-ignore
-  //       let imageURL = await new Promise((resolve, reject) => {
-  //         task.then(snap => {
-  //           ref.getDownloadURL().then(data => {
-  //             resolve(data);
-  //           });
-  //         });
-  //       });
-  //       return imageURL;
-  //     } catch (err) {
-  //       console.log('uploadImage try/catch error: ' + err.message);
-  //     }
-  //   };
+//       const task = ref.putFile(uri);
+//       console.log('Here Task=>', task);
+//       //@ts-ignore
+//       let imageURL = await new Promise((resolve, reject) => {
+//         task.then(snap => {
+//           ref.getDownloadURL().then(data => {
+//             resolve(data);
+//           });
+//         });
+//       });
+//       return imageURL;
+//     } catch (err) {
+//       console.log('uploadImage try/catch error: ' + err.message);
+//     }
+//   };
 
 export default new Firebaseservices();

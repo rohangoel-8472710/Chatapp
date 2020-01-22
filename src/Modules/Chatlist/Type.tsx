@@ -1,0 +1,1 @@
+export const UPDATE_USERDETAILS = "SignIn/UPDATE_USERDETAILS";

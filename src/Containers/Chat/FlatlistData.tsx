@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, TouchableOpacity, SafeAreaView} from 'react-native';
+import {View, Text, TouchableOpacity, SafeAreaView, Image} from 'react-native';
 //import {styles} from '../../styles/styles';
 import styles from '../Chat/styles';
 
@@ -20,7 +20,10 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
   render() {
     const {item} = this.props;
     return (
-      <SafeAreaView>
+      <View style={styles.parentview}>
+        <>
+          <Image source={{uri: item.imageURL}} style={styles.profile} />
+        </>
         <TouchableOpacity
           style={styles.List}
           onPress={() => this.props.chat(item)}>
@@ -34,7 +37,7 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
           <Text style={styles.name}>{this.props.name}</Text>
           <Text style={styles.message}>{this.props.msg}</Text>
         </View> */}
-      </SafeAreaView>
+      </View>
     );
   }
 }
