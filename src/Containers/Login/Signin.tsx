@@ -58,7 +58,7 @@ export default class SignIn extends React.Component<Props, State> {
 
   onlogin = (email: string, password: string) => {
     let user = {email: email, password: password};
-    Firebaseservices.onPressLogin(user, this.loginsuccess, this.loginfailed);
+    Firebaseservices.login(user, this.loginsuccess, this.loginfailed);
   };
 
   loginsuccess = (data: any) => {
@@ -69,17 +69,17 @@ export default class SignIn extends React.Component<Props, State> {
     // console.warn('ok')
     this.props.updateEmail(this.state.email);
     this.props.updateUid(data.user.uid);
-    console.warn('Login successfull');
+    // console.warn('Login successfull');
     // Firebaseservices.writeinboxdata(
     //   data.user.id,
     //   this.state.email,
     //   this.state.message,
     // );
     this.props.navigation.navigate('Chatlist', {
-      name: this.state.name,
-      email: this.state.email,
-      uid: this.state.uid,
-      avatar: this.state.avatar,
+      // name: this.state.name,
+      // email: this.state.email,
+      // uid: this.state.uid,
+      // avatar: this.state.avatar,
     });
   };
   loginfailed = () => {
@@ -148,8 +148,8 @@ export default class SignIn extends React.Component<Props, State> {
               this.onChangeEmail();
             }}
             autoCapitalize="none"
-            onFocus={() => this.setState({ borderemail: 1 })}
-            onBlur={() => this.setState({ borderemail: 0 })}
+            onFocus={() => this.setState({borderemail: 1})}
+            onBlur={() => this.setState({borderemail: 0})}
           />
           <View>
             <TextInput
@@ -175,8 +175,8 @@ export default class SignIn extends React.Component<Props, State> {
               returnKeyType="done"
               returnKeyLabel="Submit"
               keyboardType="default"
-              onFocus={() => this.setState({ borderpassword: 2 })}
-              onBlur={() => this.setState({ borderpassword: 0 })}
+              onFocus={() => this.setState({borderpassword: 2})}
+              onBlur={() => this.setState({borderpassword: 0})}
             />
             <TouchableOpacity
               style={styles.eyesignin}

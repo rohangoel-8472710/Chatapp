@@ -6,18 +6,19 @@ const Styles = StyleSheet.create({
     flex: 1,
   },
   addicon: {
-    position: 'absolute',
-    bottom: vh(60),
-    right: vw(30),
-    borderWidth: vh(1),
-    height: vw(40),
-    width: vw(40),
-    borderRadius: vw(62.5),
-    // borderColor: 'red',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // position: 'absolute',
+    // bottom: vh(60),
+    // right: vw(30),
+    // borderWidth: vh(1),
+    // height: vw(40),
+    // width: vw(40),
+    // borderRadius: vw(62.5),
+    // // borderColor: 'red',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     zIndex: 1,
-    backgroundColor: Colors.shembe,
+    marginRight:vw(15)
+    //backgroundColor: Colors.shembe,
   },
   plustyle: {
     fontSize: 30,
@@ -25,15 +26,10 @@ const Styles = StyleSheet.create({
     color: 'white',
   },
   List: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: vh(1),
     flexDirection: 'row',
-    width: vw(330),
-    height: vh(30),
-    marginTop: vh(20),
-    backgroundColor: Colors.fadedGray,
-    alignSelf: 'center',
+    padding: vh(10),
+    alignItems: 'center',
+    zIndex: 1,
   },
   textEmail: {
     fontSize: vw(15),
@@ -60,21 +56,23 @@ const Styles = StyleSheet.create({
     marginLeft: vw(25),
   },
   chats: {
-    fontSize: vh(25),
-    fontWeight: 'bold',
-    marginLeft: vw(15),
-    marginTop: vh(60),
+    // paddingLeft: vw(15),
+    fontSize: vw(25),
+    marginLeft:vw(15),
+    fontWeight:'bold'
+    // paddingBottom: vh(20)
   },
   messageview: {
-    height: vh(40),
-    width: vw(30),
+    height: '100%',
+    width: '75%',
+    justifyContent: 'space-between',
   },
   textname: {
-    fontSize: vw(15),
+    fontSize: vw(20),
   },
   addimg: {
-    height: vh(30),
-    width: vh(30),
+    height: vh(25),
+    width: vh(25),
   },
   profile: {
     height: vw(50),
@@ -83,9 +81,31 @@ const Styles = StyleSheet.create({
   },
   parentview: {
     flex: 1,
+    flexDirection:'row',
     borderWidth: vh(2),
     alignItems: 'center',
+    justifyContent:'flex-start',
+    borderColor:Colors.fadedGray,
     padding: vh(10),
   },
+  inboxview: {
+    flex: 1,
+    borderColor: Colors.fadedGray,
+    padding: vw(15),
+    flexDirection: 'row',
+  },
+  text: {
+    flexDirection: 'row',
+    padding: vh(10),
+  },
+  lastmessage: {
+    fontSize: vw(12),
+  },
+  header:{
+   justifyContent:'space-between',
+   marginTop:vh(20),
+   flexDirection:'row',
+   alignItems:'center'
+  }
 });
 export default Styles;

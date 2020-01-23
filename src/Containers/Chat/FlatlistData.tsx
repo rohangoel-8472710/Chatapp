@@ -19,6 +19,7 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
 
   render() {
     const {item} = this.props;
+    console.warn('item ',item)
     return (
       <View style={styles.parentview}>
         <>
@@ -28,15 +29,9 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
           style={styles.List}
           onPress={() => this.props.chat(item)}>
           <View style={styles.messageview}>
-            <Text style={styles.textname}>{item.displayname}</Text>
+            <Text style={styles.textname}>{item.displayName}</Text>
           </View>
-          {/* <Text style={styles.textEmail}>{this.props.email}</Text> */}
-          {/* <Text style={styles.message}>{this.props.message}</Text> */}
         </TouchableOpacity>
-        {/* <View style={styles.lastMessage}>
-          <Text style={styles.name}>{this.props.name}</Text>
-          <Text style={styles.message}>{this.props.msg}</Text>
-        </View> */}
       </View>
     );
   }

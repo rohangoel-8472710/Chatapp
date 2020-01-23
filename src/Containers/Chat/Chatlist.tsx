@@ -5,6 +5,7 @@ import styles from '../Chat/styles';
 import FlatlistData from './FlatlistData';
 import InboxList from './InboxList';
 import Images from '../../Constants/Images';
+import {SafeAreaView} from 'react-native-safe-area-context';
 export interface Props {
   navigation?: any;
   uid: string;
@@ -18,13 +19,13 @@ interface State {
   name: string;
   uid: string;
   email: string;
+  lastMsgData: Array<any>;
   list: Array<any>;
   Show: boolean;
   roomID: string;
   chatsDone: boolean;
   updatedData: any;
   chatEmpty: boolean;
-  lastmsg: Array<any>;
 }
 
 export default class Chatlist extends Component<Props, State> {
@@ -40,45 +41,20 @@ export default class Chatlist extends Component<Props, State> {
       chatsDone: false,
       updatedData: [],
       chatEmpty: false,
-      lastmsg: [],
+      lastMsgData: [],
       roomID: '',
     };
   }
 
   componentDidMount() {
     this.getInbox();
-    // var arr = this.state.list;
-    // Firebaseservices.readUserData((data: any) => {
-    //   //console.warn('data -> ', data);
-    //   arr = arr.concat(data);
-    // });
-    // //console.warn('arr ', arr);
-    // setTimeout(() => {
-    //   this.setState({
-    //     list: arr,
-    //   });
-    //   //console.warn('data ', this.state.list);
-    // }, 1000);
-    // Firebaseservices.readInboxData(this.getLastMessages);
   }
-
-  // getuserdata = (data: any) => {
-  //   // console.warn('data ',data);
-  //   var arr: Array<any> = [];
-  //   let tempArray = this.state.data;
-  //   let indexToFind = tempArray.findIndex(
-  //     (item: any) => item[0] === this.state.uid,
-  //   );
-  //   tempArray.splice(indexToFind, 1);
-  //   this.setState({
-  //     data: tempArray.splice(0),
-  //   });
-  // };
 
   //
   getdata = () => {
     var newData: Array<any> = [];
-    Firebaseservices.getList((message: any) => {
+    Firebaseservices.fetchList((message: any) => {
+      console.warn('user details -- ', message);
       if (this.props.uid !== message.key) {
         newData = newData.concat(message);
       } else {
@@ -92,7 +68,7 @@ export default class Chatlist extends Component<Props, State> {
 
   //
   getInbox = () => {
-    Firebaseservices.Inboxlist(this.state.uid, (data: any) => {
+    Firebaseservices.inboxList(this.state.uid, (data: any) => {
       if (data !== null) {
         var objData = Object.keys(data).map(function(key) {
           return data[key];
@@ -100,7 +76,7 @@ export default class Chatlist extends Component<Props, State> {
         this.setState(
           {
             chatEmpty: false,
-            lastmsg: objData,
+            lastMsgData: objData,
           },
           () => this.getdata(),
         );
@@ -135,6 +111,14 @@ export default class Chatlist extends Component<Props, State> {
       chatRoomId = this.props.uid.concat(user.key);
     }
     this.setState({roomID: chatRoomId, Show: !this.state.Show});
+    console.warn(
+      'navigating user -> ',
+      chatRoomId,
+      user.displayname,
+      user.key,
+      user.imageURL,
+    );
+    console.warn('second navigation -> ', this.props.user, this.props.user.key);
     this.props.navigation.navigate('Chat', {
       roomID: chatRoomId,
       username: user.displayname,
@@ -164,9 +148,10 @@ export default class Chatlist extends Component<Props, State> {
     return <FlatlistData item={item} chat={this.chatRoom} />;
   };
 
+  //
   renderinbox = (rowData: any) => {
     const {key, item} = rowData;
-    return <InboxList item={item} chat={this.existchatroom} />;
+    return <InboxList item={item} open={this.existchatroom} />;
   };
   // getLastMessages = (data: any) => {
   //   if (data) {
@@ -256,16 +241,18 @@ export default class Chatlist extends Component<Props, State> {
 
   render() {
     return (
-      <View style={styles.parent}>
-        <TouchableOpacity
-          style={styles.addicon}
-          onPress={() => this.displaylist()}>
-          <Image
-            source={this.state.Show ? Images.MINUS : Images.PLUS}
-            style={styles.addimg}
-          />
-        </TouchableOpacity>
-        <Text style={styles.chats}>Chats</Text>
+      <SafeAreaView style={styles.parent}>
+        <View style={styles.header}>
+          <Text style={styles.chats}>Chats</Text>
+          <TouchableOpacity
+            style={styles.addicon}
+            onPress={() => this.displaylist()}>
+            <Image
+              source={this.state.Show ? Images.MINUS : Images.PLUS}
+              style={styles.addimg}
+            />
+          </TouchableOpacity>
+        </View>
         {this.state.chatEmpty ? (
           <View style={styles.centerNoChats}>
             <Image source={Images.noChat} style={styles.noChatImage} />
@@ -273,7 +260,7 @@ export default class Chatlist extends Component<Props, State> {
           </View>
         ) : (
           <FlatList
-            data={this.state.lastmsg}
+            data={this.state.lastMsgData}
             keyExtractor={(item, key) => key.toString()}
             renderItem={this.renderinbox}
           />
@@ -286,7 +273,7 @@ export default class Chatlist extends Component<Props, State> {
             renderItem={this.renderData}
           />
         )}
-      </View>
+      </SafeAreaView>
     );
   }
 }

@@ -24,7 +24,7 @@ interface State {
   email: string;
   password: string;
   name: string;
-  sourceimg: string;
+  source: string;
   submitDisabled: boolean;
   uid: string;
   showpassword: boolean;
@@ -40,7 +40,7 @@ export default class SignUp extends React.Component<Props, State> {
       email: '',
       password: '',
       name: '',
-      sourceimg: '',
+      source: '',
       showpassword: false,
       submitDisabled: true,
       uid: '',
@@ -56,34 +56,21 @@ export default class SignUp extends React.Component<Props, State> {
     });
   };
   onImageUpload = () => {
-    console.warn('ok');
     ImagePicker.openPicker({
       cropping: true,
     }).then(image => {
       // console.log("ImagePath ", image.path);
-      this.setState({sourceimg: image.path});
+      this.setState({source: image.path});
     });
   };
   onsignup = () => {
-    console.warn(
-      this.state.name,
-      this.state.email,
-      this.state.password,
-      this.state.sourceimg,
-    );
     try {
       let user = {
         name: this.state.name,
         email: this.state.email,
         password: this.state.password,
-        sourceimg: this.state.sourceimg,
       };
-      Firebaseservices.createAccount(
-        this.state.email,
-        this.state.password,
-        this.loginsuccess,
-        this.loginfailed,
-      );
+      Firebaseservices.signUp(user, this.loginsuccess, this.loginfailed);
     } catch ({message}) {
       console.log('account creation failed.catch error:' + message);
     }
@@ -91,6 +78,20 @@ export default class SignUp extends React.Component<Props, State> {
   };
 
   loginsuccess = (data: any) => {
+    Firebaseservices.uploadImage(
+      data.user.uid,
+      this.state.source,
+      (url: string) => {
+        let user = {
+          uid: data.user.uid,
+          avatar: url,
+          name: this.state.name,
+          email: this.state.email,
+          password: this.state.password,
+        };
+        Firebaseservices.addingUser(user);
+      },
+    );
     console.warn(data.user.uid);
     // this.setState({
     //   uid: data.user.uid,
@@ -98,18 +99,11 @@ export default class SignUp extends React.Component<Props, State> {
     this.props.updateEmail(this.state.email);
     this.props.updateUid(data.user.uid);
     console.warn('Login successfull');
-    let user = {
-      uid: data.user.uid,
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-    };
-    Firebaseservices.writedata(user);
     this.props.navigation.navigate('Chatlist', {
-      name: this.state.name,
-      email: this.state.email,
-      uid: this.state.uid,
-      Avatar: this.state.sourceimg,
+      // name: this.state.name,
+      // email: this.state.email,
+      // uid: this.state.uid,
+      // Avatar: this.state.sourceimg,
     });
   };
   loginfailed = () => {
@@ -176,9 +170,9 @@ export default class SignUp extends React.Component<Props, State> {
             style={styles.uploadimage}
             resizeMode="contain"
             source={
-              this.state.sourceimg === ''
+              this.state.source === ''
                 ? Images.PROFILE
-                : {uri: this.state.sourceimg}
+                : {uri: this.state.source}
             }
           />
           <TouchableOpacity

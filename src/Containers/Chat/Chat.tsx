@@ -1,52 +1,60 @@
 import React, {Component} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import Firebaseservices from '../../utils/FirebaseServices';
-import { TouchableOpacityProps,TextStyle,ViewStyle, } from 'react-native';
+//import {TouchableOpacityProps, TextStyle, ViewStyle} from 'react-native';
 export interface Props {
   navigation: any;
+  user: any;
   //message:string
 }
 interface State {
   messages: any;
-  name: string;
-  uid: string;
-  email: string;
+  lastmsg: string;
 }
 export default class Chat extends Component<Props, State> {
   constructor(props: Props) {
+    console.warn('chat -> ', props.user);
     super(props);
     this.state = {
-      uid: this.props.navigation.getParam('uid'),
-      name: this.props.navigation.getParam('name'),
-      email: this.props.navigation.getParam('email'),
       messages: [],
+      lastmsg: '',
     };
   }
   componentDidMount() {
-    console.warn(this.state.uid, this.state.email);
-    Firebaseservices.refOn((message: any) => {
-      this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, message),
-      }));
-    });
-    Firebaseservices.writeinboxdata(
-      this.state.uid,
-      this.state.email,
-      this.state.messages,
+    console.warn(this.props.user);
+    Firebaseservices.refOn(
+      this.props.navigation.getParam('roomID'),
+      (message: any) => {
+        this.setState(previousState => ({
+          messages: GiftedChat.append(previousState.messages, message),
+          lastmsg: message,
+        }));
+      },
     );
+    // Firebaseservices.writeinboxdata(
+    //   this.state.uid,
+    //   this.state.email,
+    //   this.state.messages,
+    // );
   }
-  //   componentWillUnmount() {
-  //     Firebaseservices.refOff()
-  // }
+  get user() {
+    return {
+      _id: this.props.user.key,
+      _name: this.props.user.displayName,
+      avatar: this.props.user.imageURL,
+      id: this.props.navigation.getParam('userid'),
+      name: this.props.navigation.getParam('username'),
+      newavatar: this.props.navigation.getParam('useravatar'),
+      roomID: this.props.navigation.getParam('roomID'),
+      email: this.props.user.email,
+    };
+  }
   render() {
     return (
       <GiftedChat
         messages={this.state.messages}
         onSend={Firebaseservices.send}
-        user={{
-          name: 'Rohan',
-          _id: this.state.uid,
-        }}
+        user={this.user}
       />
     );
   }
