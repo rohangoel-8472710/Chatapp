@@ -120,7 +120,7 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     height: vh(22),
     width: vh(22),
-    bottom: vh(8),
+    bottom: vh(2),
     left: vw(60),
   },
   signIN: {

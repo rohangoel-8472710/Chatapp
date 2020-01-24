@@ -8,6 +8,7 @@ const Colors = {
     pinkishGrey: 'rgb(191,191,191)',
     tealBlue:'rgb(1 ,167, 163)',
     whiteborder:'rgb (244 244 244)',
+    Green: 'rgb(4, 131, 123)',
 }
 
 export default Colors;

@@ -19,7 +19,7 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
 
   render() {
     const {item} = this.props;
-    console.warn('item ',item)
+    // console.warn('item ', item);
     return (
       <View style={styles.parentview}>
         <>

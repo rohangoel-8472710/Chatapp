@@ -14,6 +14,7 @@ import Images from '../../Constants/Images';
 import Firebaseservices from '../../utils/FirebaseServices';
 import ImagePicker from 'react-native-image-crop-picker';
 import Colors from '../../Constants/Colors';
+import LinearGradient from 'react-native-linear-gradient';
 export interface Props {
   navigation: any;
   updateEmail: Function;
@@ -92,13 +93,13 @@ export default class SignUp extends React.Component<Props, State> {
         Firebaseservices.addingUser(user);
       },
     );
-    console.warn(data.user.uid);
+    // console.warn(data.user.uid);
     // this.setState({
     //   uid: data.user.uid,
     // });
     this.props.updateEmail(this.state.email);
     this.props.updateUid(data.user.uid);
-    console.warn('Login successfull');
+    // console.warn('Login successfull');
     this.props.navigation.navigate('Chatlist', {
       // name: this.state.name,
       // email: this.state.email,
@@ -166,19 +167,17 @@ export default class SignUp extends React.Component<Props, State> {
         </View>
 
         <View style={styles.Uploadview}>
-          <Image
-            style={styles.uploadimage}
-            resizeMode="contain"
-            source={
-              this.state.source === ''
-                ? Images.PROFILE
-                : {uri: this.state.source}
-            }
-          />
-          <TouchableOpacity
-            style={styles.editimage}
-            onPress={() => this.onImageUpload()}>
-            <Image source={Images.EDIT} />
+          <TouchableOpacity onPress={() => this.onImageUpload()}>
+            <Image
+              style={styles.uploadimage}
+              resizeMode="contain"
+              source={
+                this.state.source === ''
+                  ? Images.PROFILE
+                  : {uri: this.state.source}
+              }
+            />
+            <Image source={Images.EDIT} style={styles.editimage} />
           </TouchableOpacity>
         </View>
 
@@ -268,16 +267,15 @@ export default class SignUp extends React.Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={styles.ButtonSignUp}
-          onPress={() => this.onsignup()}>
-          <Text style={styles.ButtonText}>Signup</Text>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => this.onsignup()}>
+          <LinearGradient
+            style={styles.ButtonSignUp}
+            colors={['#01a7a3', '#66eb8f']}
+            start={{x: 1, y: 0}}
+            end={{x: 0, y: 1}}>
+            <Text style={styles.ButtonText}>Signup</Text>
+          </LinearGradient>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={styles.ButtonUploadIamge}
-          onPress={() => this.onImageUpload()}>
-          <Text style={styles.ButtonText}>Upload Image</Text>
-        </TouchableOpacity> */}
       </View>
     );
   }

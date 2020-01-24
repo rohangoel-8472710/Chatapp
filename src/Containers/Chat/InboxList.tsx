@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from '../Chat/styles';
-import {AppState} from './FlatlistData';
 export interface AppProps {
   navigation?: any;
   open: Function;
@@ -9,7 +8,7 @@ export interface AppProps {
   uid: string;
 }
 
-export default class AppComponent extends React.Component<AppProps, AppState> {
+export default class AppComponent extends React.Component<AppProps> {
   constructor(props: AppProps) {
     super(props);
     this.state = {};
