@@ -2,6 +2,7 @@ import * as React from 'react';
 import {View, Text, TouchableOpacity, SafeAreaView, Image} from 'react-native';
 //import {styles} from '../../styles/styles';
 import styles from '../Chat/styles';
+import Images from '../../Constants/Images';
 
 export interface AppProps {
   navigation?: any;

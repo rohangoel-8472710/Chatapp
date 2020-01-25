@@ -75,24 +75,27 @@ const Styles = StyleSheet.create({
     height: vw(50),
     width: vw(50),
     borderRadius: vw(25),
+    // backgroundColor:'blue'
   },
   parentview: {
     flex: 1,
     flexDirection: 'row',
-    borderWidth: vh(2),
+    borderBottomWidth: vh(1),
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
     borderColor: Colors.fadedGray,
-    padding: vh(10),
+    padding: vh(15),
   },
   inboxview: {
     flex: 1,
     borderColor: Colors.fadedGray,
-    borderWidth: vh(2),
+    borderBottomWidth: vh(1),
     width: '100%',
-    padding: vw(15),
+    padding: vh(15),
     marginTop: vh(10),
     flexDirection: 'row',
+    //backgroundColor: 'red',
   },
   text: {
     flexDirection: 'row',
@@ -174,6 +177,15 @@ const Styles = StyleSheet.create({
   },
   headerName: {
     fontSize: vh(15),
+  },
+  Timeview: {
+    height: '100%',
+    width: '25%',
+    justifyContent: 'space-between',
+  },
+  Timetext: {
+    fontSize: vw(14),
+    color: Colors.tealBlue,
   },
 });
 export default Styles;

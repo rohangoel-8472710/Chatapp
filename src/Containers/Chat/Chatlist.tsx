@@ -120,7 +120,7 @@ export default class Chatlist extends Component<Props, State> {
       chatRoomId = this.props.uid.concat(user.key);
     }
     this.setState({roomID: chatRoomId, Show: !this.state.Show});
-  
+
     this.props.navigation.navigate('Chat', {
       roomID: chatRoomId,
       username: user.displayname,
