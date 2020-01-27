@@ -9,14 +9,13 @@ const AppNavigator = createStackNavigator(
     Signin: Signin,
     SignUp: SignUp,
     Chat: Chat,
-    Chatlist:Chatlist
+    Chatlist: Chatlist,
   },
   {
     initialRouteName: 'Signin',
-    defaultNavigationOptions:{
-        headerShown:false
-    }
-  
+    defaultNavigationOptions: {
+      headerShown: false,
+    },
   },
 );
 export default createAppContainer(AppNavigator);
