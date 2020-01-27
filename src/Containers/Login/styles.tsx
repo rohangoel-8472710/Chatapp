@@ -128,11 +128,8 @@ const Styles = StyleSheet.create({
     left: vw(30),
   },
   imagestyle: {
-    height: vh(150),
-    width: vw(110),
-    position: 'absolute',
-    right: vw(0),
-    top: vw(0),
+    height: '100%',
+    width: '100%',
   },
   signUPbtn: {
     position: 'absolute',
@@ -175,6 +172,20 @@ const Styles = StyleSheet.create({
     color: Colors.fadedGray,
     left: vw(15),
     fontWeight: '500',
+  },
+  Graphicsview: {
+    position: 'absolute',
+    justifyContent: 'flex-end',
+    right: 0,
+    top: 0,
+    height: vh(162.5),
+    width: vh(129),
+  },
+  indicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: vw(5),
   },
 });
 export default Styles;

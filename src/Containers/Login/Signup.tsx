@@ -8,13 +8,12 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-//import {styles} from '../../styles/styles';
 import styles from './styles';
 import Images from '../../Constants/Images';
 import Firebaseservices from '../../utils/FirebaseServices';
-import ImagePicker from 'react-native-image-crop-picker';
 import Colors from '../../Constants/Colors';
 import LinearGradient from 'react-native-linear-gradient';
+import {ImagePicker} from '../../Components';
 export interface Props {
   navigation: any;
   updateEmail: Function;
@@ -35,6 +34,8 @@ interface State {
   bordername: number;
 }
 export default class SignUp extends React.Component<Props, State> {
+  Input: any;
+  Inputnext: any;
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -56,12 +57,12 @@ export default class SignUp extends React.Component<Props, State> {
       showpassword: value,
     });
   };
-  onImageUpload = () => {
-    ImagePicker.openPicker({
-      cropping: true,
-    }).then(image => {
-      // console.log("ImagePath ", image.path);
-      this.setState({source: image.path});
+
+  imagePicker = () => {
+    ImagePicker.GetPic((response: string) => {
+      this.setState({
+        source: response,
+      });
     });
   };
   onsignup = () => {
@@ -75,7 +76,6 @@ export default class SignUp extends React.Component<Props, State> {
     } catch ({message}) {
       console.log('account creation failed.catch error:' + message);
     }
-    // Firebaseservices.writedata(this.state.name, )
   };
 
   loginsuccess = (data: any) => {
@@ -93,19 +93,9 @@ export default class SignUp extends React.Component<Props, State> {
         Firebaseservices.addingUser(user);
       },
     );
-    // console.warn(data.user.uid);
-    // this.setState({
-    //   uid: data.user.uid,
-    // });
     this.props.updateEmail(this.state.email);
     this.props.updateUid(data.user.uid);
-    // console.warn('Login successfull');
-    this.props.navigation.navigate('Chatlist', {
-      // name: this.state.name,
-      // email: this.state.email,
-      // uid: this.state.uid,
-      // Avatar: this.state.sourceimg,
-    });
+    this.props.navigation.navigate('Chatlist', {});
   };
   loginfailed = () => {
     alert('Login Failed');
@@ -116,10 +106,8 @@ export default class SignUp extends React.Component<Props, State> {
     setTimeout(() => {
       if (this.state.email === '') {
         increaseBorder = 0;
-        // console.warn('increaseBrderxdq', this.state.email);
       } else {
         increaseBorder++;
-        // console.warn('increaseBorder', this.state.email);
       }
 
       this.setState({borderemail: increaseBorder});
@@ -167,7 +155,7 @@ export default class SignUp extends React.Component<Props, State> {
         </View>
 
         <View style={styles.Uploadview}>
-          <TouchableOpacity onPress={() => this.onImageUpload()}>
+          <TouchableOpacity onPress={() => this.imagePicker()}>
             <Image
               style={styles.uploadimage}
               resizeMode="contain"
@@ -190,19 +178,20 @@ export default class SignUp extends React.Component<Props, State> {
             },
           ]}
           placeholder="Name"
-          // placeholderTextColor="#9a73ef"
           onChangeText={val => {
             this.setState({name: val});
             this.onChangeName();
           }}
           value={this.state.name}
           autoCapitalize="none"
-          keyboardAppearance="light"
-          returnKeyLabel="Next"
+          autoCorrect={false}
           returnKeyType="next"
           keyboardType="default"
           onFocus={() => this.setState({bordername: 1})}
           onBlur={() => this.setState({bordername: 0})}
+          onSubmitEditing={() => {
+            this.Input.focus();
+          }}
         />
         <TextInput
           style={[
@@ -215,19 +204,23 @@ export default class SignUp extends React.Component<Props, State> {
             },
           ]}
           placeholder="Email"
-          // placeholderTextColor="#9a73ef"
           autoCapitalize="none"
           onChangeText={val => {
             this.setState({email: val});
             this.onChangeEmail();
           }}
           value={this.state.email}
-          keyboardAppearance="light"
-          returnKeyLabel="Next"
           returnKeyType="next"
           keyboardType="email-address"
           onFocus={() => this.setState({borderemail: 1})}
           onBlur={() => this.setState({borderemail: 0})}
+          ref={ref => {
+            this.Input = ref;
+          }}
+          onSubmitEditing={() => {
+            this.Inputnext.focus();
+          }}
+          autoCorrect={false}
         />
         <View>
           <TextInput
@@ -241,20 +234,22 @@ export default class SignUp extends React.Component<Props, State> {
               },
             ]}
             placeholder="Password"
-            // placeholderTextColor="#9a73ef"
             autoCapitalize="none"
             onChangeText={val => {
               this.setState({password: val});
               this.onChangePassword();
             }}
             value={this.state.password}
-            keyboardAppearance="light"
             secureTextEntry={!this.state.showpassword}
             returnKeyType="done"
-            returnKeyLabel="Submit"
             keyboardType="default"
             onFocus={() => this.setState({borderpassword: 1})}
             onBlur={() => this.setState({borderpassword: 0})}
+            ref={ref => {
+              this.Inputnext = ref;
+            }}
+            autoCorrect={false}
+            onSubmitEditing={() => this.onsignup()}
           />
           <TouchableOpacity
             style={styles.eye}

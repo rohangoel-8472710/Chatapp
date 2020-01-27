@@ -2,6 +2,7 @@ import * as React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from '../Chat/styles';
 import Images from '../../Constants/Images';
+import {vw} from '../../Constants/Dimensions';
 export interface AppProps {
   navigation?: any;
   open: Function;
@@ -29,39 +30,26 @@ export default class AppComponent extends React.Component<AppProps> {
   public render() {
     const {item} = this.props;
     const {user} = this.props.item;
-    const val = this.props.uid === user.id;
+    console.warn('user ==>', user.avatar);
     return (
-      <View style={styles.inboxview}>
-        <View>
-          <Image
-            source={{uri: val ? user.avatar : user.newavatar}}
-            // source={Images.PROFILE}
-            styles={styles.profile}
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.text}
-          onPress={() =>
-            this.props.open(
-              val ? user._id : user.id,
-              val ? user.avatar : user.newavatar,
-              val ? user._name : user.name,
-              user.roomID,
-            )
-          }>
-          <View style={styles.messageview}>
-            <Text style={styles.textname}>{val ? user._name : user.name}</Text>
+      <TouchableOpacity
+        style={styles.inboxview}
+        onPress={() =>
+          this.props.open(user.id, user.avatar, user.name, item.roomID)
+        }>
+        <View style={styles.messageview}>
+          <Image source={{uri: user.avatar}} style={styles.profile} />
+          <View style={styles.msgandname}>
+            <Text style={styles.textname}>{user.name}</Text>
             <Text style={styles.lastmessage} numberOfLines={1}>
               {item.lastMsg}
             </Text>
           </View>
-          <View style={styles.Timeview}>
-            <Text style={styles.Timetext}>
-              {this.getTimefromDate(item.createdAt)}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+        <Text style={styles.Timetextinbox}>
+          {this.getTimefromDate(item.createdAt)}
+        </Text>
+      </TouchableOpacity>
     );
   }
 }

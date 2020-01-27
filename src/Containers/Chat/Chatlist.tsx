@@ -12,6 +12,7 @@ import styles from '../Chat/styles';
 import FlatlistData from './FlatlistData';
 import InboxList from './InboxList';
 import Images from '../../Constants/Images';
+import {vw} from '../../Constants/Dimensions';
 export interface Props {
   navigation?: any;
   uid: string;
@@ -58,10 +59,8 @@ export default class Chatlist extends Component<Props, State> {
 
   //
   getdata = () => {
-    //console.warn('displaylist');
     var newData: Array<any> = [];
     Firebaseservices.fetchList((message: any) => {
-      // console.warn('user details -- ', message);
       if (this.props.uid !== message.key) {
         newData = newData.concat(message);
       } else {
@@ -75,9 +74,7 @@ export default class Chatlist extends Component<Props, State> {
 
   //
   getInbox = () => {
-    //console.warn('Inbox')
     Firebaseservices.inboxList(this.state.uid, (data: any) => {
-      // console.warn('Inbox  ', data);
       if (data !== null) {
         var objData = Object.keys(data).map(function(key) {
           return data[key];
@@ -120,20 +117,20 @@ export default class Chatlist extends Component<Props, State> {
       chatRoomId = this.props.uid.concat(user.key);
     }
     this.setState({roomID: chatRoomId, Show: !this.state.Show});
-
+    console.warn('name -> ', user.displayName);
     this.props.navigation.navigate('Chat', {
       roomID: chatRoomId,
-      username: user.displayname,
+      username: user.displayName,
       userid: user.key,
-      useravatar: user.imageURL,
+      useravatar: user.photoURL,
     });
   };
 
   //
   existchatroom = (
     id: string,
-    name: string,
     avatar: string,
+    name: string,
     roomID: string,
   ) => {
     this.props.navigation.navigate('Chat', {
@@ -162,9 +159,6 @@ export default class Chatlist extends Component<Props, State> {
     return (
       <SafeAreaView style={styles.parent}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-            <Image source={Images.BackButton} style={styles.backButtonImage} />
-          </TouchableOpacity>
           <TouchableOpacity
             style={styles.addicon}
             onPress={() => this.displaylist()}>
@@ -187,6 +181,10 @@ export default class Chatlist extends Component<Props, State> {
             data={this.state.lastMsgData}
             keyExtractor={(item, key) => key.toString()}
             renderItem={this.renderinbox}
+            bounces={false}
+            style={{
+              width: vw(375),
+            }}
           />
         )}
 
@@ -196,6 +194,7 @@ export default class Chatlist extends Component<Props, State> {
             data={this.state.list}
             keyExtractor={(item, index) => index.toString()}
             renderItem={this.renderData}
+            bounces={false}
           />
         )}
       </SafeAreaView>

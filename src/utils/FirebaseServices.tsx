@@ -1,12 +1,12 @@
 import firebase, {Firebase, auth} from 'react-native-firebase';
 import {Database, DatabaseStatics} from 'react-native-firebase/database';
 import {Platform} from 'react-native';
+import {string} from 'prop-types';
 
 let Ref = firebase.database().ref('AllUsers/');
 let chatref = firebase.database().ref('Msgs/');
 let roomchat = firebase.database();
 let inbox = firebase.database();
-//import Store from '../Store/Store';
 class Firebaseservices {
   constructor() {
     this.initializeFireBase();
@@ -41,9 +41,7 @@ class Firebaseservices {
       .then(data => {
         console.log('data ', data);
       })
-      .catch(error => {
-        // console.warn('error ', error);
-      });
+      .catch(error => {});
   }
 
   readUserData(callback: Function) {
@@ -68,6 +66,7 @@ class Firebaseservices {
   };
 
   addingUser = (user: any) => {
+    console.warn('user==> ', user);
     const users = {
       key: user.uid,
       displayName: user.name,
@@ -79,7 +78,6 @@ class Firebaseservices {
 
   fetchList = (callback: Function) => {
     Ref.on('child_added', (snapshot: any) => {
-      // console.warn(snapshot)
       callback(snapshot.val());
     });
   };
@@ -95,24 +93,36 @@ class Firebaseservices {
     for (let i = 0; i < messages.length; i++) {
       const {text, user} = messages[i];
       const message = {text, user, createdAt: new Date().getTime()};
+      console.warn('user data', user);
       console.log('msg sended ', message);
 
+      const datasender = {
+        id: message.user.id,
+        name: message.user.name,
+        avatar: message.user.newavatar,
+      };
       inbox
         .ref('Inbox/' + user._id)
         .child(user.roomID)
         .set({
           lastMsg: message.text,
           createdAt: message.createdAt,
-          user: message.user,
+          user: datasender,
+          roomID: user.roomID,
         });
-
+      const datareciver = {
+        id: message.user._id,
+        name: message.user._name,
+        avatar: message.user.avatar,
+      };
       inbox
         .ref('Inbox/' + user.id)
         .child(user.roomID)
         .set({
           lastMsg: message.text,
           createdAt: message.createdAt,
-          user: message.user,
+          user: datareciver,
+          roomID: user.roomID,
         });
 
       roomchat.ref('chatRoom/' + user.roomID).push(message);
@@ -120,12 +130,9 @@ class Firebaseservices {
   };
 
   refOn = (id: string, callback: Function) => {
-    roomchat
-      .ref('chatRoom/' + id)
-
-      .on('child_added', (snapshot: any) => {
-        callback(this.parse(snapshot));
-      });
+    roomchat.ref('chatRoom/' + id).on('child_added', (snapshot: any) => {
+      callback(this.parse(snapshot));
+    });
   };
 
   parse = (snapshot: any) => {
@@ -134,14 +141,11 @@ class Firebaseservices {
     const {key: _id} = snapshot;
     const createdAt = new Date(numberStamp);
     const message = {id, _id, createdAt, text, user};
-
     return message;
   };
 
   inboxList = (uid: string, callback: Function) => {
-    // console.warn('uid -> ',uid)
     inbox.ref('Inbox/' + uid).on('value', function(snapshot: any) {
-      // console.warn('in  ', snapshot);
       callback(snapshot.val());
     });
   };
@@ -161,9 +165,7 @@ class Firebaseservices {
         console.log(url);
         callback(url);
       })
-      .catch(error => {
-        // console.warn('Error uploading image: ', error);
-      });
+      .catch(error => {});
   };
 }
 

@@ -47,21 +47,15 @@ const Styles = StyleSheet.create({
     marginLeft: vw(25),
   },
   chats: {
-    // paddingLeft: vw(15),
     fontSize: vw(25),
     marginLeft: vw(15),
     fontWeight: 'bold',
     alignSelf: 'flex-start',
     marginTop: vh(20),
-    // paddingBottom: vh(20)
   },
   messageview: {
-    height: '100%',
-    width: '75%',
-    justifyContent: 'space-between',
-    borderRadius: vw(5),
-
-    // backgroundColor:'red'
+    flexDirection: 'row',
+    // backgroundColor: 'red',
   },
   textname: {
     fontSize: vw(20),
@@ -75,7 +69,8 @@ const Styles = StyleSheet.create({
     height: vw(50),
     width: vw(50),
     borderRadius: vw(25),
-    // backgroundColor:'blue'
+    marginLeft: vw(15),
+    // backgroundColor: 'blue',
   },
   parentview: {
     flex: 1,
@@ -84,18 +79,19 @@ const Styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    borderColor: Colors.fadedGray,
+    borderColor: Colors.textInput,
     padding: vh(15),
   },
   inboxview: {
     flex: 1,
-    borderColor: Colors.fadedGray,
+    borderColor: Colors.textInput,
     borderBottomWidth: vh(1),
-    width: '100%',
-    padding: vh(15),
-    marginTop: vh(10),
+    // width: '100%',
+    // padding: vh(15),
+    marginTop: vh(20),
     flexDirection: 'row',
-    //backgroundColor: 'red',
+    // backgroundColor: 'pink',
+    justifyContent: 'space-between',
   },
   text: {
     flexDirection: 'row',
@@ -111,7 +107,7 @@ const Styles = StyleSheet.create({
     marginTop: vh(30),
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     width: '100%',
   },
   userlist: {
@@ -136,11 +132,15 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: vw(5),
+    marginHorizontal: vh(7.5),
   },
   Container: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: vh(70),
+    minHeight: vh(25),
+    maxHeight: vh(80),
+    paddingVertical: vh(1),
+    borderTopWidth: 0,
   },
   Primary: {
     flex: 1,
@@ -152,9 +152,10 @@ const Styles = StyleSheet.create({
     height: vw(45),
     alignItems: 'center',
     fontSize: vw(15),
-    paddingLeft: vw(10),
-    paddingRight: vw(10),
-    paddingBottom: vw(10),
+    paddingLeft: vh(10),
+    paddingRight: vh(10),
+    paddingBottom: vh(10),
+    backgroundColor: 'white',
   },
   Left: {
     backgroundColor: 'white',
@@ -179,13 +180,43 @@ const Styles = StyleSheet.create({
     fontSize: vh(15),
   },
   Timeview: {
-    height: '100%',
-    width: '25%',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
-  Timetext: {
+  Timetextinbox: {
     fontSize: vw(14),
     color: Colors.tealBlue,
+    marginRight: vw(14),
+  },
+  textTime: {
+    fontSize: vw(12),
+  },
+  DAY: {
+    backgroundColor: Colors.day,
+    paddingHorizontal: vw(13),
+    paddingVertical: vh(8),
+    borderRadius: vh(5),
+  },
+  daytext: {
+    fontSize: vw(13),
+    color: Colors.greyishBrown,
+  },
+  footer: {
+    height: vh(20),
+    width: '100%',
+  },
+  imgheader: {
+    height: vw(40),
+    width: vw(40),
+    borderRadius: vw(20),
+  },
+  imgheaderView: {
+    padding: vw(10),
+    paddingLeft: 0,
+  },
+  msgandname: {
+    flexDirection: 'column',
+    marginLeft: vw(10),
+    marginBottom: vh(10),
   },
 });
 export default Styles;

@@ -4,15 +4,17 @@ import {
   InputToolbar,
   Composer,
   Bubble,
+  Time,
+  Day,
 } from 'react-native-gifted-chat';
 import {View, TouchableOpacity, Image, Text} from 'react-native';
 import Firebaseservices from '../../utils/FirebaseServices';
 import styles from '../Chat/styles';
 import Images from '../../Constants/Images';
+import {vh} from '../../Constants/Dimensions';
 export interface Props {
   navigation: any;
   user: any;
-  //message:string
 }
 interface State {
   messages: any;
@@ -21,7 +23,6 @@ interface State {
 export default class Chat extends Component<Props, State> {
   giftedChatRef: any;
   constructor(props: Props) {
-    // console.warn('chat -> ', props.user);
     super(props);
     this.state = {
       messages: [],
@@ -29,7 +30,6 @@ export default class Chat extends Component<Props, State> {
     };
   }
   componentDidMount() {
-    // console.warn(this.props.user);
     Firebaseservices.refOn(
       this.props.navigation.getParam('roomID'),
       (message: any) => {
@@ -44,7 +44,7 @@ export default class Chat extends Component<Props, State> {
     return {
       _id: this.props.user.key,
       _name: this.props.user.displayName,
-      avatar: this.props.user.imageURL,
+      avatar: this.props.user.photoURL,
       id: this.props.navigation.getParam('userid'),
       name: this.props.navigation.getParam('username'),
       newavatar: this.props.navigation.getParam('useravatar'),
@@ -76,8 +76,8 @@ export default class Chat extends Component<Props, State> {
     return (
       <InputToolbar
         {...props}
-        container={styles.Container}
-        primary={styles.Primary}
+        containerStyle={styles.Container}
+        primaryStyle={styles.Primary}
       />
     );
   };
@@ -94,6 +94,7 @@ export default class Chat extends Component<Props, State> {
     return (
       <Bubble
         {...props}
+        //@ts-ignore
         wrapperStyle={{
           left: styles.Left,
           right: styles.Right,
@@ -102,7 +103,30 @@ export default class Chat extends Component<Props, State> {
     );
   };
 
+  rendertime = (props: any) => {
+    return (
+      <Time
+        {...props}
+        timeTextStyle={{
+          left: styles.textTime,
+          right: styles.textTime,
+        }}
+      />
+    );
+  };
+
+  renderday = (props: any) => {
+    return (
+      <Day {...props} wrapperStyle={styles.DAY} textStyle={styles.daytext} />
+    );
+  };
+
+  renderchatfooter = () => {
+    return <View style={styles.footer}></View>;
+  };
   render() {
+    const img = this.props.navigation.getParam('useravatar');
+    console.warn('user img ', img);
     return (
       <View style={{flex: 1}}>
         <View style={styles.chatHeader}>
@@ -111,8 +135,14 @@ export default class Chat extends Component<Props, State> {
             onPress={() => this.props.navigation.goBack()}>
             <Image source={Images.BackButton} />
           </TouchableOpacity>
+          <View style={styles.imgheaderView}>
+            <Image
+              source={img === '' ? Images.PROFILE : {uri: img}}
+              style={styles.imgheader}
+            />
+          </View>
           <Text style={styles.headerName}>
-            {this.props.navigation.getParam('receiverName')}
+            {this.props.navigation.getParam('username')}
           </Text>
         </View>
         <GiftedChat
@@ -126,6 +156,12 @@ export default class Chat extends Component<Props, State> {
           renderInputToolbar={this.renderinputtoolbar}
           renderComposer={this.rendercomposer}
           renderBubble={this.renderbubble}
+          renderTime={this.rendertime}
+          renderDay={this.renderday}
+          renderChatFooter={this.renderchatfooter}
+          showAvatarForEveryMessage={false}
+          renderAvatarOnTop={true}
+          showUserAvatar={true}
         />
       </View>
     );

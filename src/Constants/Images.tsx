@@ -6,11 +6,11 @@ const Images = {
   PROFILE: require('../Assets/Images/icPicPlaceholder.png'),
   SignUpGraphic: require('../Assets/Images/icSignUpGraphic.png'),
   BackButton: require('../Assets/Images/icBackBtn.png'),
-  EDIT:require('../Assets/Images/icEdit.png'),
-  noChat:require('../Assets/Images/icGraphicNoChat.png'),
-  PLUS:require('../Assets/Images/plus.png'),
-  MINUS:require('../Assets/Images/minus.png'),
-  SEND:require('../Assets/Images/icSend.png')
+  EDIT: require('../Assets/Images/icEdit.png'),
+  noChat: require('../Assets/Images/icGraphicNoChat.png'),
+  PLUS: require('../Assets/Images/plus.png'),
+  MINUS: require('../Assets/Images/minus.png'),
+  SEND: require('../Assets/Images/icSend.png'),
 };
 
 export default Images;

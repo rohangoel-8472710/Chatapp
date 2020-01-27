@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {View, Text, TouchableOpacity, SafeAreaView, Image} from 'react-native';
-//import {styles} from '../../styles/styles';
 import styles from '../Chat/styles';
 import Images from '../../Constants/Images';
 
@@ -20,11 +19,16 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
 
   render() {
     const {item} = this.props;
-    // console.warn('item ', item);
+    console.warn('item name ', item.displayName);
     return (
       <View style={styles.parentview}>
         <>
-          <Image source={{uri: item.imageURL}} style={styles.profile} />
+          <Image
+            source={
+              item.photoURL === '' ? Images.PROFILE : {uri: item.photoURL}
+            }
+            style={styles.profile}
+          />
         </>
         <TouchableOpacity
           style={styles.List}

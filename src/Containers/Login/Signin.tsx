@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
-//import {styles} from '../../styles/styles';
 import styles from './styles';
 import Images from '../../Constants/Images';
 import Firebaseservices from '../../utils/FirebaseServices';
@@ -29,8 +29,10 @@ interface State {
   avatar: string;
   borderemail: number;
   borderpassword: number;
+  animate: boolean;
 }
 export default class SignIn extends React.Component<Props, State> {
+  Input: any;
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -43,11 +45,11 @@ export default class SignIn extends React.Component<Props, State> {
       avatar: '',
       borderemail: 0,
       borderpassword: 0,
+      animate: false,
     };
   }
   componentDidMount() {
     Firebaseservices.initializeFireBase();
-    // console.warn('ok')
   }
 
   showPassword = (value: boolean) => {
@@ -57,32 +59,25 @@ export default class SignIn extends React.Component<Props, State> {
   };
 
   onlogin = (email: string, password: string) => {
+    this.setState({
+      animate: true,
+    });
     let user = {email: email, password: password};
     Firebaseservices.login(user, this.loginsuccess, this.loginfailed);
   };
 
   loginsuccess = (data: any) => {
-    // console.warn(data.user.uid);
-    // this.setState({
-    //   uid: data.user.uid,
-    // });
-    // console.warn('ok')
     this.props.updateEmail(this.state.email);
     this.props.updateUid(data.user.uid);
-    // console.warn('Login successfull');
-    // Firebaseservices.writeinboxdata(
-    //   data.user.id,
-    //   this.state.email,
-    //   this.state.message,
-    // );
-    this.props.navigation.navigate('Chatlist', {
-      // name: this.state.name,
-      // email: this.state.email,
-      // uid: this.state.uid,
-      // avatar: this.state.avatar,
+    this.setState({
+      animate: false,
     });
+    this.props.navigation.navigate('Chatlist', {});
   };
   loginfailed = () => {
+    this.setState({
+      animate: false,
+    });
     alert('Login Failed');
   };
 
@@ -92,15 +87,12 @@ export default class SignIn extends React.Component<Props, State> {
     setTimeout(() => {
       if (this.state.email === '') {
         increaseBorder = 0;
-        // console.warn('increaseBrderxdq', this.state.email);
       } else {
         increaseBorder++;
-        // console.warn('increaseBorder', this.state.email);
       }
 
       this.setState({borderemail: increaseBorder});
     }, 100);
-    // increaseBorder++;
   };
   onChangePassword = () => {
     let increaseBorder = this.state.borderpassword;
@@ -116,7 +108,9 @@ export default class SignIn extends React.Component<Props, State> {
   render() {
     return (
       <View style={styles.main}>
-        {/* <Image source={Images.SignUpGraphic} style={styles.imagestyle} /> */}
+        <View style={styles.Graphicsview}>
+          <Image source={Images.SignUpGraphic} style={styles.imagestyle} />
+        </View>
         <TouchableOpacity
           style={styles.signUPbtn}
           onPress={() => this.props.navigation.navigate('SignUp')}>
@@ -142,7 +136,7 @@ export default class SignIn extends React.Component<Props, State> {
             ]}
             value={this.state.email}
             placeholder="Email"
-            //placeholderTextColor="#9a73ef"
+            keyboardType="email-address"
             onChangeText={val => {
               this.setState({email: val});
               this.onChangeEmail();
@@ -150,6 +144,11 @@ export default class SignIn extends React.Component<Props, State> {
             autoCapitalize="none"
             onFocus={() => this.setState({borderemail: 1})}
             onBlur={() => this.setState({borderemail: 0})}
+            returnKeyType="next"
+            autoCorrect={false}
+            onSubmitEditing={() => {
+              this.Input.focus();
+            }}
           />
           <View>
             <TextInput
@@ -163,7 +162,6 @@ export default class SignIn extends React.Component<Props, State> {
                 },
               ]}
               placeholder="Password"
-              //placeholderTextColor="#9a73ef"
               onChangeText={val => {
                 this.setState({password: val});
                 this.onChangePassword();
@@ -173,10 +171,15 @@ export default class SignIn extends React.Component<Props, State> {
               keyboardAppearance="light"
               secureTextEntry={!this.state.showpassword}
               returnKeyType="done"
-              returnKeyLabel="Submit"
               keyboardType="default"
               onFocus={() => this.setState({borderpassword: 2})}
               onBlur={() => this.setState({borderpassword: 0})}
+              onSubmitEditing={() =>
+                this.onlogin(this.state.email, this.state.password)
+              }
+              ref={ref => {
+                this.Input = ref;
+              }}
             />
             <TouchableOpacity
               style={styles.eyesignin}
@@ -192,7 +195,6 @@ export default class SignIn extends React.Component<Props, State> {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            //style={styles.submitButton}
             onPress={() => this.onlogin(this.state.email, this.state.password)}
             activeOpacity={0.8}>
             <LinearGradient
@@ -202,6 +204,12 @@ export default class SignIn extends React.Component<Props, State> {
               end={{x: 0, y: 1}}>
               <Text style={styles.ButtonText}>Submit</Text>
             </LinearGradient>
+            <ActivityIndicator
+              animating={this.state.animate}
+              size={'large'}
+              style={styles.indicator}
+              color={Colors.tealBlue}
+            />
           </TouchableOpacity>
         </SafeAreaView>
       </View>
