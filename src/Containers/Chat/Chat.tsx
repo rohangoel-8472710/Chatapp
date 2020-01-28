@@ -7,7 +7,7 @@ import {
   Time,
   Day,
 } from 'react-native-gifted-chat';
-import {View, TouchableOpacity, Image, Text} from 'react-native';
+import {View, TouchableOpacity, Image, Text, SafeAreaView} from 'react-native';
 import Firebaseservices from '../../utils/FirebaseServices';
 import styles from '../Chat/styles';
 import Images from '../../Constants/Images';
@@ -148,7 +148,7 @@ export default class Chat extends Component<Props, State> {
   render() {
     const img = this.props.navigation.getParam('useravatar');
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <View style={styles.chatHeader}>
           <TouchableOpacity
             style={styles.headerChat}
@@ -186,8 +186,9 @@ export default class Chat extends Component<Props, State> {
           renderAvatarOnTop={true}
           showUserAvatar={true}
           onInputTextChanged={val => this.ontextChanged(val)}
+          scrollToBottom={true}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

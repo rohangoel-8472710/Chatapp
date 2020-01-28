@@ -20,23 +20,19 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
   render() {
     const {item} = this.props;
     return (
-      <View style={styles.parentview}>
-        <>
+      <TouchableOpacity
+        style={styles.parentview}
+        onPress={() => this.props.chat(item)}>
+        <View style={styles.messageview}>
           <Image
             source={
               item.photoURL === '' ? Images.PROFILE : {uri: item.photoURL}
             }
-            style={styles.profile}
+            style={styles.profileuser}
           />
-        </>
-        <TouchableOpacity
-          style={styles.List}
-          onPress={() => this.props.chat(item)}>
-          <View style={styles.messageview}>
-            <Text style={styles.textname}>{item.displayName}</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+          <Text style={styles.textusername}>{item.displayName}</Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 }

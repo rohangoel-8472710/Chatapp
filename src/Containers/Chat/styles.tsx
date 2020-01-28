@@ -114,7 +114,7 @@ const Styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     position: 'absolute',
-    top: vh(90),
+    top: vh(80),
     right: 0,
     left: 0,
     bottom: 0,
@@ -155,7 +155,6 @@ const Styles = StyleSheet.create({
     paddingLeft: vh(10),
     paddingRight: vh(10),
     paddingBottom: vh(10),
-    backgroundColor: 'white',
   },
   Left: {
     backgroundColor: 'white',
@@ -167,7 +166,6 @@ const Styles = StyleSheet.create({
   },
   chatHeader: {
     flexDirection: 'row',
-    paddingTop: vh(30),
     alignItems: 'center',
   },
   headerChat: {
@@ -223,6 +221,17 @@ const Styles = StyleSheet.create({
     marginLeft: vw(10),
     fontWeight: 'bold',
     color: Colors.greyishBrown,
+  },
+  textusername: {
+    fontSize: vw(20),
+    fontWeight: 'bold',
+    marginLeft: vw(10),
+    marginTop: vh(10),
+  },
+  profileuser: {
+    height: vw(50),
+    width: vw(50),
+    borderRadius: vw(25),
   },
 });
 export default Styles;

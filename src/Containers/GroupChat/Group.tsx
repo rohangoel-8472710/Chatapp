@@ -20,4 +20,16 @@ export default class Group extends React.Component<Props, State> {
     };
   }
   componentDidMount() {}
+
+  get user() {
+    return {
+      id: this.props.navigation.getParam('userid'),
+      name: this.props.navigation.getParam('username'),
+      newavatar: this.props.navigation.getParam('useravatar'),
+    };
+  }
+
+  render() {
+    return <GiftedChat onSend={Firebaseservices.send} />;
+  }
 }
