@@ -6,9 +6,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
 });
 const mapStateToProps = (state: any) => {
   const {uid, email} = state.SignIn;
-  //console.warn('uid',uid)
   const {user} = state.Chatlist;
-  //console.warn('uid', uid);
   return {
     user,
     uid,

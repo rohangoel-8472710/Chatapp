@@ -66,7 +66,7 @@ class Firebaseservices {
   };
 
   addingUser = (user: any) => {
-    console.warn('user==> ', user);
+    // console.warn('user==> ', user);
     const users = {
       key: user.uid,
       displayName: user.name,
@@ -93,7 +93,7 @@ class Firebaseservices {
     for (let i = 0; i < messages.length; i++) {
       const {text, user} = messages[i];
       const message = {text, user, createdAt: new Date().getTime()};
-      console.warn('user data', user);
+      // console.warn('user data', user);
       console.log('msg sended ', message);
 
       const datasender = {
@@ -166,6 +166,24 @@ class Firebaseservices {
         callback(url);
       })
       .catch(error => {});
+  };
+
+  getTypingValue = (chatRoomID: string,userID: string, callback: Function) => {
+    firebase
+      .database()
+      .ref('Typing/' + chatRoomID)
+      .child(userID)
+      .on('value', (snapshot: any) => {
+        callback(snapshot.val());
+      });
+  };
+
+  ChangeTypingText = (chatRoomId: string, receiverID: string, value: any) => {
+    firebase
+      .database()
+      .ref('Typing/' + chatRoomId)
+      .child(receiverID)
+      .set({typing: value});
   };
 }
 

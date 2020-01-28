@@ -7,6 +7,7 @@ import {
   Alert,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import styles from './styles';
 import Images from '../../Constants/Images';
@@ -32,6 +33,7 @@ interface State {
   borderemail: number;
   borderpassword: number;
   bordername: number;
+  animate: boolean;
 }
 export default class SignUp extends React.Component<Props, State> {
   Input: any;
@@ -50,6 +52,7 @@ export default class SignUp extends React.Component<Props, State> {
       borderemail: 0,
       borderpassword: 0,
       bordername: 0,
+      animate: false,
     };
   }
   showPassword = (value: boolean) => {
@@ -270,6 +273,12 @@ export default class SignUp extends React.Component<Props, State> {
             end={{x: 0, y: 1}}>
             <Text style={styles.ButtonText}>Signup</Text>
           </LinearGradient>
+          <ActivityIndicator
+            animating={this.state.animate}
+            size={'large'}
+            style={styles.indicator}
+            color={Colors.tealBlue}
+          />
         </TouchableOpacity>
       </View>
     );

@@ -30,7 +30,6 @@ export default class AppComponent extends React.Component<AppProps> {
   public render() {
     const {item} = this.props;
     const {user} = this.props.item;
-    console.warn('user ==>', user.avatar);
     return (
       <TouchableOpacity
         style={styles.inboxview}

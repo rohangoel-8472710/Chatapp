@@ -218,5 +218,11 @@ const Styles = StyleSheet.create({
     marginLeft: vw(10),
     marginBottom: vh(10),
   },
+  Typingtext: {
+    fontSize: vh(13),
+    marginLeft: vw(10),
+    fontWeight: 'bold',
+    color: Colors.greyishBrown,
+  },
 });
 export default Styles;

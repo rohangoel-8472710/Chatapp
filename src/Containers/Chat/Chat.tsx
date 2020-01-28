@@ -11,7 +11,6 @@ import {View, TouchableOpacity, Image, Text} from 'react-native';
 import Firebaseservices from '../../utils/FirebaseServices';
 import styles from '../Chat/styles';
 import Images from '../../Constants/Images';
-import {vh} from '../../Constants/Dimensions';
 export interface Props {
   navigation: any;
   user: any;
@@ -19,6 +18,7 @@ export interface Props {
 interface State {
   messages: any;
   lastMsg: string;
+  typingText: boolean;
 }
 export default class Chat extends Component<Props, State> {
   giftedChatRef: any;
@@ -27,9 +27,15 @@ export default class Chat extends Component<Props, State> {
     this.state = {
       messages: [],
       lastMsg: '',
+      typingText: false,
     };
   }
   componentDidMount() {
+    Firebaseservices.getTypingValue(
+      this.user.roomID,
+      this.props.user.key,
+      this.getTyping,
+    );
     Firebaseservices.refOn(
       this.props.navigation.getParam('roomID'),
       (message: any) => {
@@ -40,6 +46,21 @@ export default class Chat extends Component<Props, State> {
       },
     );
   }
+
+  getTyping = (data: any) => {
+    this.setState({
+      typingText: data.typing,
+    });
+  };
+
+  ontextChanged = (val: string) => {
+    if (val !== '') {
+      Firebaseservices.ChangeTypingText(this.user.roomID, this.user.id, true);
+    } else {
+      Firebaseservices.ChangeTypingText(this.user.roomID, this.user.id, false);
+    }
+  };
+
   get user() {
     return {
       _id: this.props.user.key,
@@ -126,7 +147,6 @@ export default class Chat extends Component<Props, State> {
   };
   render() {
     const img = this.props.navigation.getParam('useravatar');
-    console.warn('user img ', img);
     return (
       <View style={{flex: 1}}>
         <View style={styles.chatHeader}>
@@ -143,6 +163,9 @@ export default class Chat extends Component<Props, State> {
           </View>
           <Text style={styles.headerName}>
             {this.props.navigation.getParam('username')}
+          </Text>
+          <Text style={styles.Typingtext}>
+            {this.state.typingText ? 'typing...' : ''}
           </Text>
         </View>
         <GiftedChat
@@ -162,6 +185,7 @@ export default class Chat extends Component<Props, State> {
           showAvatarForEveryMessage={false}
           renderAvatarOnTop={true}
           showUserAvatar={true}
+          onInputTextChanged={val => this.ontextChanged(val)}
         />
       </View>
     );
