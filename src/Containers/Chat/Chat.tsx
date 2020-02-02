@@ -7,10 +7,21 @@ import {
   Time,
   Day,
 } from 'react-native-gifted-chat';
-import {View, TouchableOpacity, Image, Text, SafeAreaView} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  Text,
+  SafeAreaView,
+  Alert,
+} from 'react-native';
 import Firebaseservices from '../../utils/FirebaseServices';
 import styles from '../Chat/styles';
 import Images from '../../Constants/Images';
+import VectorIcons from '../../Constants/VectorIcons';
+import Colors from '../../Constants/Colors';
+import {vw, vh} from '../../Constants/Dimensions';
+import {ImagePicker} from '../../Components';
 export interface Props {
   navigation: any;
   user: any;
@@ -18,8 +29,14 @@ export interface Props {
 interface State {
   messages: any;
   lastMsg: string;
-  typingText: boolean;
+  isTyping: boolean;
+  allGroupUsers: Array<any>;
+  source: string;
+  loadState: boolean;
 }
+
+var counter: number = 1;
+
 export default class Chat extends Component<Props, State> {
   giftedChatRef: any;
   constructor(props: Props) {
@@ -27,52 +44,128 @@ export default class Chat extends Component<Props, State> {
     this.state = {
       messages: [],
       lastMsg: '',
-      typingText: false,
+      isTyping: false,
+      allGroupUsers: [],
+      source: '',
+      loadState: false,
     };
   }
   componentDidMount() {
-    Firebaseservices.getTypingValue(
-      this.user.roomID,
-      this.props.user.key,
-      this.getTyping,
-    );
+    counter = 1;
+    if (this.props.navigation.getParam('type') === 'group') {
+      Firebaseservices.fetchingGroupUsers(
+        this.props.navigation.getParam('roomID'),
+        this.setGpusers,
+      );
+    } else {
+      this.refOn();
+    }
+    if (this.props.navigation.getParam('type') === 'normal') {
+      Firebaseservices.fetchTyping(
+        this.props.navigation.getParam('roomID'),
+        this.props.navigation.getParam('reciverId'),
+        this.getTyping,
+      );
+    }
+  }
+
+  getTyping = (data: any) => {
+    if (data !== null) {
+      this.setState({
+        isTyping: data.typing,
+      });
+    }
+  };
+
+  refOn = () => {
     Firebaseservices.refOn(
+      counter,
       this.props.navigation.getParam('roomID'),
+      this.props.navigation.getParam('type'),
+      this.props.navigation.getParam('type') === 'normal'
+        ? []
+        : this.state.allGroupUsers,
       (message: any) => {
+        // console.warn('messages=>', message);
         this.setState(previousState => ({
           messages: GiftedChat.append(previousState.messages, message),
           lastMsg: message,
         }));
       },
     );
-  }
-
-  getTyping = (data: any) => {
-    this.setState({
-      typingText: data.typing,
-    });
   };
 
-  ontextChanged = (val: string) => {
-    if (val !== '') {
-      Firebaseservices.ChangeTypingText(this.user.roomID, this.user.id, true);
-    } else {
-      Firebaseservices.ChangeTypingText(this.user.roomID, this.user.id, false);
+  Typing = (text: string) => {
+    if (text !== '') {
+      Firebaseservices.Typingdisplay(
+        this.props.navigation.getParam('roomID'),
+        this.props.user.key,
+      );
     }
   };
 
   get user() {
-    return {
-      _id: this.props.user.key,
-      _name: this.props.user.displayName,
-      avatar: this.props.user.photoURL,
-      id: this.props.navigation.getParam('userid'),
-      name: this.props.navigation.getParam('username'),
-      newavatar: this.props.navigation.getParam('useravatar'),
-      roomID: this.props.navigation.getParam('roomID'),
-      email: this.props.user.email,
-    };
+    if (this.props.navigation.getParam('type') === 'normal') {
+      return {
+        _id: this.props.user.key,
+        _name: this.props.user.displayName,
+        avatar: this.props.user.photoURL,
+        id: this.props.navigation.getParam('userid'),
+        name: this.props.navigation.getParam('username'),
+        newavatar: this.props.navigation.getParam('useravatar'),
+        roomID: this.props.navigation.getParam('roomID'),
+        email: this.props.user.email,
+        type: 'normal',
+      };
+    } else if (this.props.navigation.getParam('type') === 'group') {
+      return {
+        _id: this.props.user.key,
+        _name: this.props.user.displayName,
+        avatar: this.props.user.photoURL,
+        id: this.props.navigation.getParam('roomID'),
+        name: this.props.navigation.getParam('username'),
+        newavatar: this.props.navigation.getParam('useravatar'),
+        roomID: this.props.navigation.getParam('roomID'),
+        email: this.props.user.email,
+        type: 'group',
+      };
+    }
   }
+
+  setGpusers = (userList: any) => {
+    var arr = userList.AllUsers.map((obj: {key: string}) => obj.key);
+    arr = arr.concat(userList.creator.key);
+    this.setState(
+      {
+        allGroupUsers: arr,
+      },
+      () => this.refOn(),
+    );
+  };
+
+  uploadImage = (img: string) => {
+    // console.warn('upload Image=>', img);
+    Firebaseservices.uploadMsgPic(img, (url: string) => {
+      this.setState(
+        {
+          source: url,
+        },
+        () => this.giftedChatRef.onSend({text: ''}, true),
+      );
+    });
+  };
+
+  singleImagePicker = () => {
+    ImagePicker.GetPic((response: string) => {
+      // console.warn('Image=>', response);
+      this.uploadImage(response);
+    });
+  };
+
+  loadMsgs = () => {
+    counter = counter + 1;
+    this.refOn();
+  };
 
   rendersend = (props: any) => {
     const msg = this.giftedChatRef.state.text || '';
@@ -145,35 +238,57 @@ export default class Chat extends Component<Props, State> {
   renderchatfooter = () => {
     return <View style={styles.footer}></View>;
   };
-  render() {
+  public render() {
     const img = this.props.navigation.getParam('useravatar');
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.chatHeader}>
-          <TouchableOpacity
-            style={styles.headerChat}
-            onPress={() => this.props.navigation.goBack()}>
-            <Image source={Images.BackButton} />
-          </TouchableOpacity>
-          <View style={styles.imgheaderView}>
-            <Image
-              source={img === '' ? Images.PROFILE : {uri: img}}
-              style={styles.imgheader}
+          <View style={styles.leftheader}>
+            <TouchableOpacity
+              style={styles.headerChat}
+              onPress={() => this.props.navigation.goBack()}>
+              <Image source={Images.BackButton} />
+            </TouchableOpacity>
+            <View style={styles.imgheaderView}>
+              <Image
+                source={img === '' ? Images.PROFILE : {uri: img}}
+                style={styles.imgheader}
+              />
+              <Text style={styles.headerName}>
+                {this.props.navigation.getParam('username')}
+              </Text>
+              <Text style={styles.Typingtext}>
+                {this.state.isTyping ? 'typing...' : ''}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.cameraIcon}>
+            <VectorIcons.FontAwesome
+              name="camera"
+              size={vw(25)}
+              color={Colors.greyishBrown}
+              onPress={() => {
+                Alert.alert(
+                  'Pick Image From',
+                  '',
+                  [
+                    {text: 'Gallery', onPress: () => this.singleImagePicker()},
+                    {text: 'Cancel', onPress: () => console.log('cancelled')},
+                  ],
+                  {cancelable: true},
+                );
+              }}
             />
           </View>
-          <Text style={styles.headerName}>
-            {this.props.navigation.getParam('username')}
-          </Text>
-          <Text style={styles.Typingtext}>
-            {this.state.typingText ? 'typing...' : ''}
-          </Text>
         </View>
         <GiftedChat
           ref={ref => {
             this.giftedChatRef = ref;
           }}
           messages={this.state.messages}
-          onSend={Firebaseservices.send}
+          onSend={messages =>
+            Firebaseservices.send(messages, this.state.source)
+          }
           user={this.user}
           renderSend={this.rendersend}
           renderInputToolbar={this.renderinputtoolbar}
@@ -185,8 +300,9 @@ export default class Chat extends Component<Props, State> {
           showAvatarForEveryMessage={false}
           renderAvatarOnTop={true}
           showUserAvatar={true}
-          onInputTextChanged={val => this.ontextChanged(val)}
-          scrollToBottom={true}
+          onInputTextChanged={(text: string) => this.Typing(text)}
+          loadEarlier={this.state.loadState}
+          onLoadEarlier={this.loadMsgs}
         />
       </SafeAreaView>
     );

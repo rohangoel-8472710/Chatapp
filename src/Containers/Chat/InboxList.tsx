@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from '../Chat/styles';
-import Images from '../../Constants/Images';
-import {vw} from '../../Constants/Dimensions';
 export interface AppProps {
   navigation?: any;
   open: Function;
@@ -34,7 +32,13 @@ export default class AppComponent extends React.Component<AppProps> {
       <TouchableOpacity
         style={styles.inboxview}
         onPress={() =>
-          this.props.open(user.id, user.avatar, user.name, item.roomID)
+          this.props.open(
+            item.type,
+            user.id,
+            user.avatar,
+            user.name,
+            item.roomID,
+          )
         }>
         <View style={styles.messageview}>
           <Image source={{uri: user.avatar}} style={styles.profile} />

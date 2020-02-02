@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, SafeAreaView, Image} from 'react-native';
 import styles from '../Chat/styles';
 import Images from '../../Constants/Images';
 
-export interface AppProps {
+interface AppProps {
   navigation?: any;
   chat: Function;
   item: any;

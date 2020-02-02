@@ -1,12 +1,14 @@
 import firebase, {Firebase, auth} from 'react-native-firebase';
 import {Database, DatabaseStatics} from 'react-native-firebase/database';
 import {Platform} from 'react-native';
-import {string} from 'prop-types';
 
 let Ref = firebase.database().ref('AllUsers/');
 let chatref = firebase.database().ref('Msgs/');
 let roomchat = firebase.database();
 let inbox = firebase.database();
+let Gpref = firebase.database().ref('GroupUsers/');
+var AllGroupUsers: Array<any>;
+
 class Firebaseservices {
   constructor() {
     this.initializeFireBase();
@@ -31,6 +33,7 @@ class Firebaseservices {
     }
   };
 
+  //adding data in database
   writeUserData(email: string, fname: string, lname: string) {
     chatref
       .set({
@@ -44,12 +47,19 @@ class Firebaseservices {
       .catch(error => {});
   }
 
+  //get data from database
   readUserData(callback: Function) {
     chatref.once('value', function(snapshot: any) {
       callback(snapshot.val());
     });
   }
 
+  //Delete data from DB
+  deleteUserData() {
+    chatref.remove();
+  }
+
+  //Sign In for Firebase Auth
   login = (user: any, success_callback: any, failure_callback: any) => {
     firebase
       .auth()
@@ -58,6 +68,7 @@ class Firebaseservices {
       .catch(failure_callback);
   };
 
+  //creating new user
   signUp = (user: any, success_callback: any, failure_callback: any) => {
     firebase
       .auth()
@@ -66,12 +77,11 @@ class Firebaseservices {
   };
 
   addingUser = (user: any) => {
-    // console.warn('user==> ', user);
     const users = {
       key: user.uid,
       displayName: user.name,
       email: user.email,
-      photoURL: user.avatar,
+      photoURL: user.avatar === null ? '' : user.avatar,
     };
     Ref.push(users);
   };
@@ -89,59 +99,111 @@ class Firebaseservices {
     });
   };
 
-  send = (messages: Array<any>) => {
+  //Storing msgs on Firebase Db
+  send = (messages: Array<any>, image?: string) => {
     for (let i = 0; i < messages.length; i++) {
       const {text, user} = messages[i];
-      const message = {text, user, createdAt: new Date().getTime()};
-      // console.warn('user data', user);
+      const message = {
+        text,
+        user,
+        createdAt: new Date().getTime(),
+        image: image,
+      };
       console.log('msg sended ', message);
 
-      const datasender = {
-        id: message.user.id,
-        name: message.user.name,
-        avatar: message.user.newavatar,
-      };
-      inbox
-        .ref('Inbox/' + user._id)
-        .child(user.roomID)
-        .set({
-          lastMsg: message.text,
-          createdAt: message.createdAt,
-          user: datasender,
-          roomID: user.roomID,
+      if (message.user.type === 'normal') {
+        const datasender = {
+          id: message.user.id,
+          name: message.user.name,
+          avatar: message.user.newavatar,
+        };
+        inbox
+          .ref('Inbox/' + user._id)
+          .child(user.roomID)
+          .set({
+            lastMsg: message.text,
+            createdAt: message.createdAt,
+            roomID: user.roomID,
+            type: user.type,
+            user: datasender,
+          });
+        const datareciver = {
+          id: message.user._id,
+          name: message.user._name,
+          avatar: message.user.avatar,
+        };
+        inbox
+          .ref('Inbox/' + user.id)
+          .child(user.roomID)
+          .set({
+            lastMsg: message.text,
+            createdAt: message.createdAt,
+            roomID: user.roomID,
+            type: user.type,
+            user: datareciver,
+          });
+      } else if (message.user.type === 'group') {
+        const groupDetails = {
+          id: message.user.id,
+          name: message.user.name,
+          avatar: message.user.newavatar,
+        };
+        AllGroupUsers.map(function(id) {
+          inbox
+            .ref('Inbox/' + id)
+            .child(user.roomID)
+            .set({
+              lastMsg: message.text,
+              createdAt: message.createdAt,
+              roomID: user.roomID,
+              type: user.type,
+              user: groupDetails,
+            });
         });
-      const datareciver = {
-        id: message.user._id,
-        name: message.user._name,
-        avatar: message.user.avatar,
-      };
-      inbox
-        .ref('Inbox/' + user.id)
-        .child(user.roomID)
-        .set({
-          lastMsg: message.text,
-          createdAt: message.createdAt,
-          user: datareciver,
-          roomID: user.roomID,
-        });
+      }
 
+      //sending actual msg
       roomchat.ref('chatRoom/' + user.roomID).push(message);
+
+      this.falseTypingIndicator(user.roomID, user._id);
     }
   };
 
-  refOn = (id: string, callback: Function) => {
-    roomchat.ref('chatRoom/' + id).on('child_added', (snapshot: any) => {
-      callback(this.parse(snapshot));
-    });
+  refOn = (
+    counter: number,
+    id: string,
+    type: string,
+    allUsers: Array<any>,
+    callback: Function,
+  ) => {
+    if (type === 'group') {
+      AllGroupUsers = allUsers;
+    }
+    roomchat
+      .ref('chatRoom/' + id)
+      .limitToLast(counter === 1 ? 20 : 20 * counter)
+      // .on('child_added', (snapshot: any) => {
+      //   // alert('sdaf')
+      //   callback(this.parse(snapshot));
+      // });
+      .on('value', (snapshot: any) => {
+        snapshot.val() === null ? callback([]) : callback(this.parse(snapshot));
+      });
   };
 
+  // parse = (snapshot: any) => {
+  //   const {createdAt: numberStamp, text, user, image} = snapshot.val();
+  //   const {key: id} = snapshot;
+  //   const {key: _id} = snapshot;
+  //   const createdAt = new Date(numberStamp);
+  //   const message = {id, _id, createdAt, text, user, image};
+  //   return message;
+  // };
+
   parse = (snapshot: any) => {
-    const {createdAt: numberStamp, text, user} = snapshot.val();
-    const {key: id} = snapshot;
-    const {key: _id} = snapshot;
-    const createdAt = new Date(numberStamp);
-    const message = {id, _id, createdAt, text, user};
-    return message;
+    var result = Object.keys(snapshot.val()).map(key => snapshot.val()[key]);
+    result.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1));
+    return result;
   };
 
   inboxList = (uid: string, callback: Function) => {
@@ -150,40 +212,116 @@ class Firebaseservices {
     });
   };
 
-  uploadImage = (uid: string, path: any, callback: Function) => {
-    const imageRef = firebase
-      .storage()
-      .ref('profilePic')
-      .child(uid);
+  uploadImage = (uid: string, paths: any, callback: Function) => {
+    if (!!paths) {
+      const imageRef = firebase
+        .storage()
+        .ref('profilePic')
+        .child(uid);
 
-    return imageRef
-      .putFile(path, {contentType: 'jpg'})
-      .then(() => {
-        return imageRef.getDownloadURL();
-      })
-      .then(url => {
-        console.log(url);
-        callback(url);
-      })
-      .catch(error => {});
+      return imageRef
+        .putFile(paths, {contentType: 'jpg'})
+        .then(() => {
+          return imageRef.getDownloadURL();
+        })
+        .then(url => {
+          console.log(url);
+          callback(url);
+        })
+        .catch(error => {
+          console.warn('Error uploading image: ', error);
+        });
+    } else {
+      callback(null);
+    }
   };
 
-  getTypingValue = (chatRoomID: string,userID: string, callback: Function) => {
+  uploadMsgPic = (paths: any, callback: Function) => {
+    if (!!paths) {
+      const imageRef = firebase
+        .storage()
+        .ref('msgPics')
+        .child(Math.random().toString());
+      return imageRef
+        .putFile(paths, {contentType: 'jpg'})
+        .then(() => {
+          return imageRef.getDownloadURL();
+        })
+        .then(url => {
+          console.log(url);
+          callback(url);
+        })
+        .catch(error => {
+          console.warn('Error uploading image:', error);
+        });
+    } else {
+      callback(null);
+    }
+  };
+
+  CreatingGroup = (
+    gpId: string,
+    allUsers: any,
+    gpPic: string,
+    creator: Object,
+    callback: Function,
+  ) => {
+    const data = {
+      avatar: gpPic === null ? '' : gpPic,
+      creator: creator,
+      AllUsers: allUsers,
+    };
+    Gpref.child(`/${gpId}`).push(data);
+    callback(data);
+  };
+
+  fetchingGroupUsers = (roomID: string, callback: Function) => {
     firebase
       .database()
-      .ref('Typing/' + chatRoomID)
-      .child(userID)
-      .on('value', (snapshot: any) => {
+      .ref('GroupUsers/' + roomID)
+      .on('child_added', (snapshot: any) => {
         callback(snapshot.val());
       });
   };
 
-  ChangeTypingText = (chatRoomId: string, receiverID: string, value: any) => {
-    firebase
-      .database()
-      .ref('Typing/' + chatRoomId)
-      .child(receiverID)
-      .set({typing: value});
+  fetchTyping = (roomID: string, uid: string, callback: Function) => {
+    roomchat
+      .ref('Typing/' + roomID)
+      .child(uid)
+      .on('value', function(snapshot: any) {
+        callback(snapshot.val());
+      });
+  };
+
+  Typingdisplay = (roomID: string, myUID: string) => {
+    roomchat
+      .ref('Typing/' + roomID)
+      .child(myUID)
+      .set({
+        isTyping: true,
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.warn('error', error);
+      });
+  };
+
+  // typing indicator false
+  falseTypingIndicator = (roomID: string, _id: string) => {
+    roomchat
+      .ref('Typing/' + roomID)
+      .child(_id)
+      .set({
+        isTyping: false,
+      })
+      .then(data => {
+        console.log('false isTyping ', data);
+      })
+      .catch(error => {
+        console.warn('error ', error);
+      });
   };
 }
 

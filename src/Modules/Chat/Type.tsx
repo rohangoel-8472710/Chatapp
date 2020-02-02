@@ -1,0 +1,1 @@
+export const IS_TYPING = "Chat/IS_TYPING";

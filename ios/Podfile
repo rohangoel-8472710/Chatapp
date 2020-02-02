@@ -41,6 +41,8 @@ target 'ChatApplication' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'ChatApplicationTests' do
     inherit! :search_paths
     # Pods for testing

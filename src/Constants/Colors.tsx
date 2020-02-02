@@ -11,6 +11,8 @@ const Colors = {
   Green: 'rgb(4, 131, 123)',
   day: 'rgb(214, 231, 230)',
   greyishBrown: 'rgb(89, 89, 89)',
+  fadedTealBlue: 'rgb(225, 252, 249)',
+  modal:'rgba(0,0,0,0.7)'
 };
 
 export default Colors;

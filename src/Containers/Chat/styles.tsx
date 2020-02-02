@@ -70,7 +70,6 @@ const Styles = StyleSheet.create({
     width: vw(50),
     borderRadius: vw(25),
     marginLeft: vw(15),
-    // backgroundColor: 'blue',
   },
   parentview: {
     flex: 1,
@@ -86,8 +85,6 @@ const Styles = StyleSheet.create({
     flex: 1,
     borderColor: Colors.textInput,
     borderBottomWidth: vh(1),
-    // width: '100%',
-    // padding: vh(15),
     marginTop: vh(20),
     flexDirection: 'row',
     // backgroundColor: 'pink',
@@ -167,6 +164,7 @@ const Styles = StyleSheet.create({
   chatHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerChat: {
     flexDirection: 'row',
@@ -176,6 +174,8 @@ const Styles = StyleSheet.create({
   },
   headerName: {
     fontSize: vh(15),
+    marginLeft: vw(10),
+    marginTop: vh(5),
   },
   Timeview: {
     // justifyContent: 'space-between',
@@ -210,6 +210,7 @@ const Styles = StyleSheet.create({
   imgheaderView: {
     padding: vw(10),
     paddingLeft: 0,
+    flexDirection: 'row',
   },
   msgandname: {
     flexDirection: 'column',
@@ -232,6 +233,38 @@ const Styles = StyleSheet.create({
     height: vw(50),
     width: vw(50),
     borderRadius: vw(25),
+  },
+  separator: {
+    height: vh(1),
+    width: '100%',
+    backgroundColor: Colors.textInput,
+  },
+  mainView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: vh(15),
+  },
+  txt: {
+    flexDirection: 'row',
+    padding: vh(10),
+    alignItems: 'center',
+  },
+  msgView: {
+    height: '100%',
+    width: '75%',
+    justifyContent: 'space-between',
+  },
+  nameStyle: {
+    fontSize: vw(18),
+  },
+  leftheader: {
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+  },
+  cameraIcon: {
+    paddingHorizontal:vw(7.5)
   },
 });
 export default Styles;
