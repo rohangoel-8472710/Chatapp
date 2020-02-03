@@ -30,6 +30,7 @@ interface State {
   borderemail: number;
   borderpassword: number;
   animate: boolean;
+  btndisable: boolean;
 }
 export default class SignIn extends React.Component<Props, State> {
   Input: any;
@@ -46,6 +47,7 @@ export default class SignIn extends React.Component<Props, State> {
       borderemail: 0,
       borderpassword: 0,
       animate: false,
+      btndisable: true,
     };
   }
   componentDidMount() {
@@ -104,6 +106,13 @@ export default class SignIn extends React.Component<Props, State> {
       }
       this.setState({borderpassword: increaseBorder});
     }, 100);
+  };
+
+  disableBtn = () => {
+    const {email, password} = this.state;
+    var val = true;
+    email.length >= 6 && password.length >= 3 ? (val = false) : (val = true);
+    return val;
   };
   render() {
     return (

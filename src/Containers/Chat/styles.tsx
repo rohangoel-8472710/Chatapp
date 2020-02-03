@@ -111,7 +111,7 @@ const Styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     position: 'absolute',
-    top: vh(80),
+    top: vh(90),
     right: 0,
     left: 0,
     bottom: 0,
@@ -219,9 +219,9 @@ const Styles = StyleSheet.create({
   },
   Typingtext: {
     fontSize: vh(13),
-    marginLeft: vw(10),
+    marginTop:vh(7),
     fontWeight: 'bold',
-    color: Colors.greyishBrown,
+    color:Colors.fadedGray
   },
   textusername: {
     fontSize: vw(20),

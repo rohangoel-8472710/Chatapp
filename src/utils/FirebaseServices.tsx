@@ -206,6 +206,11 @@ class Firebaseservices {
     return result;
   };
 
+  refOff() {
+    chatref.off();
+    Ref.off();
+  }
+
   inboxList = (uid: string, callback: Function) => {
     inbox.ref('Inbox/' + uid).on('value', function(snapshot: any) {
       callback(snapshot.val());
@@ -301,7 +306,7 @@ class Firebaseservices {
         isTyping: true,
       })
       .then(data => {
-        console.log(data);
+        console.log('isTyping', data);
       })
       .catch(error => {
         console.warn('error', error);

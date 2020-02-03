@@ -20,6 +20,7 @@ import styles from '../Chat/styles';
 import Images from '../../Constants/Images';
 import VectorIcons from '../../Constants/VectorIcons';
 import Colors from '../../Constants/Colors';
+import Strings from '../../Constants/Strings';
 import {vw, vh} from '../../Constants/Dimensions';
 import {ImagePicker} from '../../Components';
 export interface Props {
@@ -33,6 +34,7 @@ interface State {
   allGroupUsers: Array<any>;
   source: string;
   loadState: boolean;
+  multiplesource: Array<string>;
 }
 
 var counter: number = 1;
@@ -48,22 +50,28 @@ export default class Chat extends Component<Props, State> {
       allGroupUsers: [],
       source: '',
       loadState: false,
+      multiplesource: [],
     };
   }
   componentDidMount() {
     counter = 1;
+
+    // fetching all memebers of group
     if (this.props.navigation.getParam('type') === 'group') {
       Firebaseservices.fetchingGroupUsers(
         this.props.navigation.getParam('roomID'),
         this.setGpusers,
       );
     } else {
+      //loading messages
       this.refOn();
     }
+
+    // fetching typing status
     if (this.props.navigation.getParam('type') === 'normal') {
       Firebaseservices.fetchTyping(
         this.props.navigation.getParam('roomID'),
-        this.props.navigation.getParam('reciverId'),
+        this.props.navigation.getParam('userid'),
         this.getTyping,
       );
     }
@@ -72,7 +80,7 @@ export default class Chat extends Component<Props, State> {
   getTyping = (data: any) => {
     if (data !== null) {
       this.setState({
-        isTyping: data.typing,
+        isTyping: data.isTyping,
       });
     }
   };
@@ -86,11 +94,19 @@ export default class Chat extends Component<Props, State> {
         ? []
         : this.state.allGroupUsers,
       (message: any) => {
-        // console.warn('messages=>', message);
-        this.setState(previousState => ({
-          messages: GiftedChat.append(previousState.messages, message),
+        // this.setState(previousState => ({
+        //   messages: GiftedChat.append(previousState.messages, message),
+        //   lastMsg: message,
+        // }));
+        if (message.length !== 20 * counter) {
+          this.setState({loadState: false});
+        } else {
+          this.setState({loadState: true});
+        }
+        this.setState({
+          messages: message,
           lastMsg: message,
-        }));
+        });
       },
     );
   };
@@ -98,6 +114,11 @@ export default class Chat extends Component<Props, State> {
   Typing = (text: string) => {
     if (text !== '') {
       Firebaseservices.Typingdisplay(
+        this.props.navigation.getParam('roomID'),
+        this.props.user.key,
+      );
+    } else {
+      Firebaseservices.falseTypingIndicator(
         this.props.navigation.getParam('roomID'),
         this.props.user.key,
       );
@@ -144,7 +165,6 @@ export default class Chat extends Component<Props, State> {
   };
 
   uploadImage = (img: string) => {
-    // console.warn('upload Image=>', img);
     Firebaseservices.uploadMsgPic(img, (url: string) => {
       this.setState(
         {
@@ -157,8 +177,18 @@ export default class Chat extends Component<Props, State> {
 
   singleImagePicker = () => {
     ImagePicker.GetPic((response: string) => {
-      // console.warn('Image=>', response);
       this.uploadImage(response);
+    });
+  };
+
+  multipleImagePicker = () => {
+    ImagePicker.GetMultiplePic((response: Array<string>) => {
+      this.setState(
+        {
+          multiplesource: response,
+        },
+        () => console.log(this.state.multiplesource),
+      );
     });
   };
 
@@ -238,6 +268,11 @@ export default class Chat extends Component<Props, State> {
   renderchatfooter = () => {
     return <View style={styles.footer}></View>;
   };
+
+  componentWillUnmount() {
+    Firebaseservices.refOff();
+  }
+
   public render() {
     const img = this.props.navigation.getParam('useravatar');
     return (
@@ -257,9 +292,10 @@ export default class Chat extends Component<Props, State> {
               <Text style={styles.headerName}>
                 {this.props.navigation.getParam('username')}
               </Text>
-              <Text style={styles.Typingtext}>
-                {this.state.isTyping ? 'typing...' : ''}
-              </Text>
+
+              {this.state.isTyping ? (
+                <Text style={styles.Typingtext}> ({Strings.typing})</Text>
+              ) : null}
             </View>
           </View>
           <View style={styles.cameraIcon}>
@@ -273,6 +309,7 @@ export default class Chat extends Component<Props, State> {
                   '',
                   [
                     {text: 'Gallery', onPress: () => this.singleImagePicker()},
+                    // {text: 'Gallery', onPress: () => this.multipleImagePicker()},
                     {text: 'Cancel', onPress: () => console.log('cancelled')},
                   ],
                   {cancelable: true},

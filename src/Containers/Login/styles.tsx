@@ -187,5 +187,8 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: vw(5),
   },
+  disable: {
+    opacity: 0.2,
+  },
 });
 export default Styles;
