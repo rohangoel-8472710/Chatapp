@@ -27,5 +27,13 @@ const Picker = {
       callback(image.path);
     });
   },
+
+  getVideo: (callback: Function) => {
+    ImagePicker.openPicker({
+      mediaType: 'video',
+    }).then((video: {path: string}) => {
+      callback(video.path);
+    });
+  },
 };
 export default Picker;

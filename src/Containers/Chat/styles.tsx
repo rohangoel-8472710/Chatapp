@@ -219,9 +219,9 @@ const Styles = StyleSheet.create({
   },
   Typingtext: {
     fontSize: vh(13),
-    marginTop:vh(7),
+    marginTop: vh(7),
     fontWeight: 'bold',
-    color:Colors.fadedGray
+    color: Colors.fadedGray,
   },
   textusername: {
     fontSize: vw(20),
@@ -264,7 +264,29 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cameraIcon: {
-    paddingHorizontal:vw(7.5)
+    paddingHorizontal: vw(7.5),
+  },
+  imgfooter: {
+    height: vh(100),
+    width: vh(140),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: vh(15),
+    backgroundColor: Colors.Green,
+    marginLeft: vw(185),
+    padding: vw(4),
+  },
+  sendimg: {
+    height: '100%',
+    width: '100%',
+    borderRadius: vh(15),
+  },
+  indicator: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });
 export default Styles;

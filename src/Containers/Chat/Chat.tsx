@@ -14,6 +14,7 @@ import {
   Text,
   SafeAreaView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import Firebaseservices from '../../utils/FirebaseServices';
 import styles from '../Chat/styles';
@@ -26,6 +27,11 @@ import {ImagePicker} from '../../Components';
 export interface Props {
   navigation: any;
   user: any;
+  addImages: Function;
+  images: any;
+  showFooter: boolean;
+  updateFooter: Function;
+  removeImages: Function;
 }
 interface State {
   messages: any;
@@ -35,6 +41,7 @@ interface State {
   source: string;
   loadState: boolean;
   multiplesource: Array<string>;
+  sendingSource: string;
 }
 
 var counter: number = 1;
@@ -51,6 +58,7 @@ export default class Chat extends Component<Props, State> {
       source: '',
       loadState: false,
       multiplesource: [],
+      sendingSource: '',
     };
   }
   componentDidMount() {
@@ -164,31 +172,73 @@ export default class Chat extends Component<Props, State> {
     );
   };
 
-  uploadImage = (img: string) => {
-    Firebaseservices.uploadMsgPic(img, (url: string) => {
-      this.setState(
-        {
-          source: url,
-        },
-        () => this.giftedChatRef.onSend({text: ''}, true),
-      );
-    });
-  };
+  // uploadImage = (img: string) => {
+  //   Firebaseservices.uploadMsgPic(img, (url: string) => {
+  //     this.setState(
+  //       {
+  //         source: url,
+  //       },
+  //       () => this.giftedChatRef.onSend({text: ''}, true),
+  //     );
+  //   });
+  // };
 
-  singleImagePicker = () => {
-    ImagePicker.GetPic((response: string) => {
-      this.uploadImage(response);
+  // singleImagePicker = () => {
+  //   ImagePicker.GetPic((response: string) => {
+  //     this.uploadImage(response);
+  //   });
+  // };
+
+  uploadImage = () => {
+    // console.warn('Image');
+    this.props.images.map((obj: any) => {
+      if (
+        obj.roomID === this.props.navigation.getParam('roomID') &&
+        obj.userID === this.props.user.key
+      ) {
+        Firebaseservices.uploadMsgPic(obj.img, (url: string, name: string) => {
+          this.setState(
+            {
+              sendingSource: url,
+            },
+            () => {
+              this.props.updateFooter(),
+                this.giftedChatRef.onSend({text: ''}, true),
+                this.props.removeImages();
+            },
+          );
+        });
+      }
     });
   };
 
   multipleImagePicker = () => {
-    ImagePicker.GetMultiplePic((response: Array<string>) => {
-      this.setState(
-        {
-          multiplesource: response,
-        },
-        () => console.log(this.state.multiplesource),
-      );
+    ImagePicker.GetMultiplePic((response: Array<any>) => {
+      response.map(res => {
+        var obj = {
+          img: res,
+          roomID: this.props.navigation.getParam('roomID'),
+          userID: this.props.user.key,
+        };
+        this.props.addImages(obj);
+        // console.warn('added');
+        if (
+          obj.roomID === this.props.navigation.getParam('roomID') &&
+          obj.userID === this.props.user.key
+        ) {
+          this.setState(
+            {
+              source: obj.img,
+            },
+            () => {
+              this.props.updateFooter();
+              this.refOn();
+              // console.warn('upload');
+              this.uploadImage();
+            },
+          );
+        }
+      });
     });
   };
 
@@ -206,6 +256,8 @@ export default class Chat extends Component<Props, State> {
           activeOpacity={1}
           onPress={() => {
             if (msg.trim().length > 0) {
+              this.giftedChatRef.onSend({text: msg.trim()}, true);
+            } else if (this.state.sendingSource !== '') {
               this.giftedChatRef.onSend({text: msg.trim()}, true);
             } else {
               return;
@@ -269,6 +321,22 @@ export default class Chat extends Component<Props, State> {
     return <View style={styles.footer}></View>;
   };
 
+  renderFooter = () => {
+    return this.props.showFooter ? (
+      <View style={styles.imgfooter}>
+        <Image source={{uri: this.state.source}} style={styles.sendimg} />
+        <ActivityIndicator
+          animating={true}
+          size="large"
+          color={Colors.Green}
+          style={styles.indicator}
+        />
+      </View>
+    ) : (
+      <></>
+    );
+  };
+
   componentWillUnmount() {
     Firebaseservices.refOff();
   }
@@ -308,8 +376,10 @@ export default class Chat extends Component<Props, State> {
                   'Pick Image From',
                   '',
                   [
-                    {text: 'Gallery', onPress: () => this.singleImagePicker()},
-                    // {text: 'Gallery', onPress: () => this.multipleImagePicker()},
+                    {
+                      text: 'Gallery',
+                      onPress: () => this.multipleImagePicker(),
+                    },
                     {text: 'Cancel', onPress: () => console.log('cancelled')},
                   ],
                   {cancelable: true},
@@ -324,7 +394,7 @@ export default class Chat extends Component<Props, State> {
           }}
           messages={this.state.messages}
           onSend={messages =>
-            Firebaseservices.send(messages, this.state.source)
+            Firebaseservices.send(messages, this.state.sendingSource)
           }
           user={this.user}
           renderSend={this.rendersend}
@@ -340,6 +410,7 @@ export default class Chat extends Component<Props, State> {
           onInputTextChanged={(text: string) => this.Typing(text)}
           loadEarlier={this.state.loadState}
           onLoadEarlier={this.loadMsgs}
+          renderFooter={this.renderFooter}
         />
       </SafeAreaView>
     );

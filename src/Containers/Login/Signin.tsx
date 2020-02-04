@@ -27,10 +27,9 @@ interface State {
   message: string;
   showpassword: boolean;
   avatar: string;
-  borderemail: number;
-  borderpassword: number;
   animate: boolean;
   btndisable: boolean;
+  bgBorder: number;
 }
 export default class SignIn extends React.Component<Props, State> {
   Input: any;
@@ -44,10 +43,9 @@ export default class SignIn extends React.Component<Props, State> {
       message: '',
       showpassword: false,
       avatar: '',
-      borderemail: 0,
-      borderpassword: 0,
       animate: false,
       btndisable: true,
+      bgBorder: 0,
     };
   }
   componentDidMount() {
@@ -83,31 +81,6 @@ export default class SignIn extends React.Component<Props, State> {
     alert('Login Failed');
   };
 
-  onChangeEmail = () => {
-    let increaseBorder = this.state.borderemail;
-
-    setTimeout(() => {
-      if (this.state.email === '') {
-        increaseBorder = 0;
-      } else {
-        increaseBorder++;
-      }
-
-      this.setState({borderemail: increaseBorder});
-    }, 100);
-  };
-  onChangePassword = () => {
-    let increaseBorder = this.state.borderpassword;
-    setTimeout(() => {
-      if (this.state.password === '') {
-        increaseBorder = 0;
-      } else {
-        increaseBorder++;
-      }
-      this.setState({borderpassword: increaseBorder});
-    }, 100);
-  };
-
   disableBtn = () => {
     const {email, password} = this.state;
     var val = true;
@@ -138,7 +111,7 @@ export default class SignIn extends React.Component<Props, State> {
               styles.inputsignin,
               {
                 borderColor:
-                  this.state.borderemail >= 1
+                  this.state.bgBorder === 1
                     ? Colors.tealBlue
                     : Colors.fadedGray,
               },
@@ -146,13 +119,12 @@ export default class SignIn extends React.Component<Props, State> {
             value={this.state.email}
             placeholder="Email"
             keyboardType="email-address"
-            onChangeText={val => {
-              this.setState({email: val});
-              this.onChangeEmail();
-            }}
+            onChangeText={(text: string) =>
+              this.setState({email: text, btndisable: this.disableBtn()})
+            }
             autoCapitalize="none"
-            onFocus={() => this.setState({borderemail: 1})}
-            onBlur={() => this.setState({borderemail: 0})}
+            onFocus={() => this.setState({bgBorder: 1})}
+            onBlur={() => this.setState({bgBorder: 0})}
             returnKeyType="next"
             autoCorrect={false}
             onSubmitEditing={() => {
@@ -165,24 +137,23 @@ export default class SignIn extends React.Component<Props, State> {
                 styles.inputsignin,
                 {
                   borderColor:
-                    this.state.borderpassword >= 1
+                    this.state.bgBorder === 2
                       ? Colors.tealBlue
                       : Colors.fadedGray,
                 },
               ]}
               placeholder="Password"
-              onChangeText={val => {
-                this.setState({password: val});
-                this.onChangePassword();
-              }}
+              onChangeText={(text: string) =>
+                this.setState({password: text, btndisable: this.disableBtn()})
+              }
               autoCapitalize="none"
               value={this.state.password}
               keyboardAppearance="light"
               secureTextEntry={!this.state.showpassword}
               returnKeyType="done"
               keyboardType="default"
-              onFocus={() => this.setState({borderpassword: 2})}
-              onBlur={() => this.setState({borderpassword: 0})}
+              onFocus={() => this.setState({bgBorder: 2})}
+              onBlur={() => this.setState({bgBorder: 0})}
               onSubmitEditing={() =>
                 this.onlogin(this.state.email, this.state.password)
               }
@@ -204,10 +175,17 @@ export default class SignIn extends React.Component<Props, State> {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            onPress={() => this.onlogin(this.state.email, this.state.password)}
+            onPress={() =>
+              this.state.btndisable
+                ? null
+                : this.onlogin(this.state.email, this.state.password)
+            }
             activeOpacity={0.8}>
             <LinearGradient
-              style={styles.submitButton}
+              style={[
+                styles.submitButton,
+                this.state.btndisable ? styles.disable : null,
+              ]}
               colors={['#01a7a3', '#66eb8f']}
               start={{x: 1, y: 0}}
               end={{x: 0, y: 1}}>

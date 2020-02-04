@@ -30,10 +30,9 @@ interface State {
   uid: string;
   showpassword: boolean;
   isChecked: boolean;
-  borderemail: number;
-  borderpassword: number;
-  bordername: number;
+  bgBorder: number;
   animate: boolean;
+  btnDisable: boolean;
 }
 export default class SignUp extends React.Component<Props, State> {
   Input: any;
@@ -49,10 +48,9 @@ export default class SignUp extends React.Component<Props, State> {
       submitDisabled: true,
       uid: '',
       isChecked: false,
-      borderemail: 0,
-      borderpassword: 0,
-      bordername: 0,
+      bgBorder: 0,
       animate: false,
+      btnDisable: true,
     };
   }
   showPassword = (value: boolean) => {
@@ -104,39 +102,13 @@ export default class SignUp extends React.Component<Props, State> {
     alert('Login Failed');
   };
 
-  onChangeEmail = () => {
-    let increaseBorder = this.state.borderemail;
-    setTimeout(() => {
-      if (this.state.email === '') {
-        increaseBorder = 0;
-      } else {
-        increaseBorder++;
-      }
-
-      this.setState({borderemail: increaseBorder});
-    }, 100);
-  };
-  onChangePassword = () => {
-    let increaseBorder = this.state.borderpassword;
-    setTimeout(() => {
-      if (this.state.password === '') {
-        increaseBorder = 0;
-      } else {
-        increaseBorder++;
-      }
-      this.setState({borderpassword: increaseBorder});
-    }, 100);
-  };
-  onChangeName = () => {
-    let increaseBorder = this.state.bordername;
-    setTimeout(() => {
-      if (this.state.name === '') {
-        increaseBorder = 0;
-      } else {
-        increaseBorder++;
-      }
-      this.setState({bordername: increaseBorder});
-    }, 100);
+  disableBtn = () => {
+    const {email, password, name} = this.state;
+    var val = true;
+    email.length >= 6 && password.length >= 3 && name.length >= 1
+      ? (val = false)
+      : (val = true);
+    return val;
   };
 
   render() {
@@ -177,21 +149,20 @@ export default class SignUp extends React.Component<Props, State> {
             styles.inputsignup,
             {
               borderColor:
-                this.state.bordername >= 1 ? Colors.tealBlue : Colors.fadedGray,
+                this.state.bgBorder === 1 ? Colors.tealBlue : Colors.fadedGray,
             },
           ]}
           placeholder="Name"
-          onChangeText={val => {
-            this.setState({name: val});
-            this.onChangeName();
-          }}
+          onChangeText={(text: string) =>
+            this.setState({name: text, btnDisable: this.disableBtn()})
+          }
           value={this.state.name}
           autoCapitalize="none"
           autoCorrect={false}
           returnKeyType="next"
           keyboardType="default"
-          onFocus={() => this.setState({bordername: 1})}
-          onBlur={() => this.setState({bordername: 0})}
+          onFocus={() => this.setState({bgBorder: 1})}
+          onBlur={() => this.setState({bgBorder: 0})}
           onSubmitEditing={() => {
             this.Input.focus();
           }}
@@ -201,22 +172,19 @@ export default class SignUp extends React.Component<Props, State> {
             styles.inputsignup,
             {
               borderColor:
-                this.state.borderemail >= 1
-                  ? Colors.tealBlue
-                  : Colors.fadedGray,
+                this.state.bgBorder === 2 ? Colors.tealBlue : Colors.fadedGray,
             },
           ]}
           placeholder="Email"
           autoCapitalize="none"
-          onChangeText={val => {
-            this.setState({email: val});
-            this.onChangeEmail();
-          }}
+          onChangeText={(text: string) =>
+            this.setState({email: text, btnDisable: this.disableBtn()})
+          }
           value={this.state.email}
           returnKeyType="next"
           keyboardType="email-address"
-          onFocus={() => this.setState({borderemail: 1})}
-          onBlur={() => this.setState({borderemail: 0})}
+          onFocus={() => this.setState({bgBorder: 2})}
+          onBlur={() => this.setState({bgBorder: 0})}
           ref={ref => {
             this.Input = ref;
           }}
@@ -231,23 +199,22 @@ export default class SignUp extends React.Component<Props, State> {
               styles.inputsignup,
               {
                 borderColor:
-                  this.state.borderpassword >= 1
+                  this.state.bgBorder === 3
                     ? Colors.tealBlue
                     : Colors.fadedGray,
               },
             ]}
             placeholder="Password"
             autoCapitalize="none"
-            onChangeText={val => {
-              this.setState({password: val});
-              this.onChangePassword();
-            }}
+            onChangeText={(text: string) =>
+              this.setState({password: text, btnDisable: this.disableBtn()})
+            }
             value={this.state.password}
             secureTextEntry={!this.state.showpassword}
             returnKeyType="done"
             keyboardType="default"
-            onFocus={() => this.setState({borderpassword: 1})}
-            onBlur={() => this.setState({borderpassword: 0})}
+            onFocus={() => this.setState({bgBorder: 3})}
+            onBlur={() => this.setState({bgBorder: 0})}
             ref={ref => {
               this.Inputnext = ref;
             }}
@@ -265,9 +232,14 @@ export default class SignUp extends React.Component<Props, State> {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => this.onsignup()}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => (this.state.btnDisable ? null : this.onsignup())}>
           <LinearGradient
-            style={styles.ButtonSignUp}
+            style={[
+              styles.ButtonSignUp,
+              this.state.btnDisable ? styles.disable : null,
+            ]}
             colors={['#01a7a3', '#66eb8f']}
             start={{x: 1, y: 0}}
             end={{x: 0, y: 1}}>
