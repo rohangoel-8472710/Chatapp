@@ -1,4 +1,14 @@
-import {IS_TYPING, MULTI_PICS, REMOVE_PICS, SHOW_FOOTER} from './Type';
+import {
+  IS_TYPING,
+  MULTI_PICS,
+  REMOVE_PICS,
+  SHOW_FOOTER,
+  CLEAR_PICS,
+  HIDE_FOOTER,
+  CURRENT_IMAGE,
+  URL_VIDEO,
+} from './Type';
+import Firebaseservices from '../../utils/FirebaseServices';
 
 export const isTyping = () => {
   return (dispatch: any, getState: any) => {
@@ -23,9 +33,63 @@ export const removeImages = () => {
   };
 };
 
-export const updateFooter = () => {
+export const showingFooter = () => {
+  return (dispatch: any) => {
+    dispatch({type: SHOW_FOOTER, payload: {data: true}});
+  };
+};
+
+export const hideFooter = () => {
+  return (dispatch: any) => {
+    dispatch({type: HIDE_FOOTER, payload: {data: false}});
+  };
+};
+
+export const clearImages = () => {
+  return (dispatch: any) => {
+    dispatch({type: CLEAR_PICS, payload: {data: []}});
+  };
+};
+
+export const changeCurrentImage = (image: string, callback: Function) => {
+  return (dispatch: any) => {
+    dispatch({type: CURRENT_IMAGE, payload: {data: image}});
+    if (callback) {
+      callback();
+    }
+  };
+};
+
+export const addVideo = (values: Object) => {
+  return (dispatch: any) => {
+    dispatch({type: URL_VIDEO, payload: {data: values}});
+  };
+};
+
+export const removeVideo = () => {
+  return (dispatch: any) => {
+    dispatch({type: URL_VIDEO, payload: {data: ''}});
+  };
+};
+
+export const uploadAndSendVideo = (
+  roomID: string,
+  userID: string,
+  ref: any,
+  callback: Function,
+) => {
   return (dispatch: any, getState: any) => {
-    const {showFooter} = getState().Chat;
-    dispatch({type: SHOW_FOOTER, payload: {data: !showFooter}});
+    const {videoURL} = getState().Chat;
+    if (videoURL.roomID === roomID && videoURL.userID === userID) {
+      dispatch({type: CURRENT_IMAGE, payload: {data: videoURL.video}});
+      Firebaseservices.uploadMsgVideo(
+        videoURL.video,
+        (url: string, name: string) => {
+          dispatch({type: URL_VIDEO, payload: {data: url}});
+          ref.onSend({text: ''}, true);
+          callback();
+        },
+      );
+    }
   };
 };

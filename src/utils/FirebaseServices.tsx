@@ -18,15 +18,15 @@ class Firebaseservices {
     if (!firebase.apps.length) {
       firebase.initializeApp(
         {
-          apiKey: 'AIzaSyDcaIGCnagjv9qNWHnAu-BzFShjZK9S7Iw',
+          apiKey: 'AIzaSyCBiaFwVmwnWMq6QoOqoGJzf9vjmNbVpAQ',
           appId:
             Platform.OS === 'ios'
-              ? '1:120970505723:ios:66b87f751411ce9d7eaf5e'
+              ? '1:818867633608:ios:b429dc2d725209db0e14fd'
               : '1:120970505723:android:9ea038a72e182e167eaf5e',
-          databaseURL: 'https://chatapplication-56657.firebaseio.com',
-          messagingSenderId: '120970505723',
-          projectId: 'chatapplication-56657',
-          storageBucket: 'chatapplication-56657.appspot.com',
+          databaseURL: 'https://react-native-e8dab.firebaseio.com',
+          messagingSenderId: '818867633608',
+          projectId: 'react-native-e8dab',
+          storageBucket: 'react-native-e8dab.appspot.com',
         },
         'chatapplication',
       );
@@ -70,6 +70,7 @@ class Firebaseservices {
 
   //creating new user
   signUp = (user: any, success_callback: any, failure_callback: any) => {
+    debugger;
     firebase
       .auth()
       .createUserWithEmailAndPassword(user.email, user.password)
@@ -77,6 +78,7 @@ class Firebaseservices {
   };
 
   addingUser = (user: any) => {
+    // console.warn('call', user);
     const users = {
       key: user.uid,
       displayName: user.name,
@@ -100,7 +102,7 @@ class Firebaseservices {
   };
 
   //Storing msgs on Firebase Db
-  send = (messages: Array<any>, image?: string) => {
+  send = (messages: Array<any>, image?: string, video?: string) => {
     for (let i = 0; i < messages.length; i++) {
       const {text, user} = messages[i];
       const message = {
@@ -108,6 +110,7 @@ class Firebaseservices {
         user,
         createdAt: new Date().getTime(),
         image: image,
+        video: video,
       };
       console.log('msg sended ', message);
 
@@ -121,7 +124,13 @@ class Firebaseservices {
           .ref('Inbox/' + user._id)
           .child(user.roomID)
           .set({
-            lastMsg: message.text,
+            // lastMsg: message.text,
+            lastMsg:
+              message.image !== ''
+                ? 'Photo'
+                : message.video !== ''
+                ? 'Video'
+                : message.text,
             createdAt: message.createdAt,
             roomID: user.roomID,
             type: user.type,
@@ -136,7 +145,13 @@ class Firebaseservices {
           .ref('Inbox/' + user.id)
           .child(user.roomID)
           .set({
-            lastMsg: message.text,
+            // lastMsg: message.text,
+            lastMsg:
+              message.image !== ''
+                ? 'Photo'
+                : message.video !== ''
+                ? 'Video'
+                : message.text,
             createdAt: message.createdAt,
             roomID: user.roomID,
             type: user.type,
@@ -153,7 +168,13 @@ class Firebaseservices {
             .ref('Inbox/' + id)
             .child(user.roomID)
             .set({
-              lastMsg: message.text,
+              // lastMsg: message.text,
+              lastMsg:
+                message.image !== ''
+                  ? 'Photo'
+                  : message.video !== ''
+                  ? 'Video'
+                  : message.text,
               createdAt: message.createdAt,
               roomID: user.roomID,
               type: user.type,
@@ -217,6 +238,7 @@ class Firebaseservices {
     });
   };
 
+  // uploading profile pic to firebase storage
   uploadImage = (uid: string, paths: any, callback: Function) => {
     if (!!paths) {
       const imageRef = firebase
@@ -235,18 +257,23 @@ class Firebaseservices {
         })
         .catch(error => {
           console.warn('Error uploading image: ', error);
+          // callback(null)
         });
     } else {
       callback(null);
     }
   };
 
+  // uploading msg pic to firebase storage
   uploadMsgPic = (paths: any, callback: Function) => {
+    // console.warn("image path->",paths)
     if (!!paths) {
+      const name = Math.random().toString();
       const imageRef = firebase
         .storage()
         .ref('msgPics')
-        .child(Math.random().toString());
+        // .child(Math.random().toString());
+        .child(name);
       return imageRef
         .putFile(paths, {contentType: 'jpg'})
         .then(() => {
@@ -254,10 +281,35 @@ class Firebaseservices {
         })
         .then(url => {
           console.log(url);
-          callback(url);
+          callback(url, name);
         })
         .catch(error => {
           console.warn('Error uploading image:', error);
+        });
+    } else {
+      callback(null);
+    }
+  };
+
+  uploadMsgVideo = (paths: any, callback: Function) => {
+    console.warn('Video->', paths);
+    if (!!paths) {
+      const name = Math.random().toString();
+      const videoRef = firebase
+        .storage()
+        .ref('msgVideos')
+        .child(name);
+      return videoRef
+        .putFile(paths, {contentType: 'mp4'})
+        .then(() => {
+          return videoRef.getDownloadURL();
+        })
+        .then(url => {
+          console.log(url);
+          callback(url, name);
+        })
+        .catch(error => {
+          console.warn('Error Uploading Video', error);
         });
     } else {
       callback(null);

@@ -264,7 +264,7 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cameraIcon: {
-    paddingHorizontal: vw(7.5),
+    paddingHorizontal: vw(10),
   },
   imgfooter: {
     height: vh(100),
@@ -287,6 +287,17 @@ const Styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  backgroundVideo: {
+    height: vw(100),
+    width: vw(170),
+    marginTop: vw(10),
+  },
+  headerView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: vw(10),
+    justifyContent: 'space-around',
   },
 });
 export default Styles;

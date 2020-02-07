@@ -18,7 +18,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* ChatApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatApplicationTests.m */; };
 		532A26CE18455154CD73161A /* libPods-ChatApplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED554DF09CBFEA4EBEFF3626 /* libPods-ChatApplication.a */; };
 		6DA1356B2CBC59B9021CFFE8 /* libPods-ChatApplication-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B37A9F811F60446E1CD03714 /* libPods-ChatApplication-tvOSTests.a */; };
-		84EC582F23C6FA83003FAB06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84EC582E23C6FA82003FAB06 /* GoogleService-Info.plist */; };
+		84CCD4BC23EA83AD0038AFC3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84CCD4BB23EA83AD0038AFC3 /* GoogleService-Info.plist */; };
 		859FC939F0B386F920BD84EF /* libPods-ChatApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A2A66A8EF95C6978427C4D /* libPods-ChatApplicationTests.a */; };
 		E0DA414655A07C2935CC2C2B /* libPods-ChatApplication-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CE70670C704D114A4D7FC5 /* libPods-ChatApplication-tvOS.a */; };
 /* End PBXBuildFile section */
@@ -67,7 +67,7 @@
 		65B742CE4E6C448ABD8743B3 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		688B6E646AB7458ABC9567C3 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		7C1390C91C8542C19894447B /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		84EC582E23C6FA82003FAB06 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		84CCD4BB23EA83AD0038AFC3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		908A639BCFE94EE884E1342A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		9B0AEC4AF24245F8A2F9C414 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		9DAE17E4956EAE28570F9F29 /* Pods-ChatApplicationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApplicationTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatApplicationTests/Pods-ChatApplicationTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -148,7 +148,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				84EC582E23C6FA82003FAB06 /* GoogleService-Info.plist */,
+				84CCD4BB23EA83AD0038AFC3 /* GoogleService-Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -382,7 +382,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				84EC582F23C6FA83003FAB06 /* GoogleService-Info.plist in Resources */,
+				84CCD4BC23EA83AD0038AFC3 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

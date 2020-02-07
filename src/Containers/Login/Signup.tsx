@@ -80,6 +80,9 @@ export default class SignUp extends React.Component<Props, State> {
   };
 
   loginsuccess = (data: any) => {
+    debugger
+    // console.warn(data.user.uid);
+    
     Firebaseservices.uploadImage(
       data.user.uid,
       this.state.source,
@@ -97,9 +100,11 @@ export default class SignUp extends React.Component<Props, State> {
     this.props.updateEmail(this.state.email);
     this.props.updateUid(data.user.uid);
     this.props.navigation.navigate('Chatlist', {});
-  };
-  loginfailed = () => {
-    alert('Login Failed');
+  }
+
+  loginfailed = (err:string) => {
+    debugger
+    alert('Login Failed'+err);
   };
 
   disableBtn = () => {

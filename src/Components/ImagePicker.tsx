@@ -14,6 +14,7 @@ const Picker = {
     ImagePicker.openPicker({
       cropping: false,
       multiple: true,
+      compressImageQuality: 0.1,
     }).then((image: Array<any>) => {
       temp = image.map(item => item.path);
       callback(temp);
@@ -31,6 +32,7 @@ const Picker = {
   getVideo: (callback: Function) => {
     ImagePicker.openPicker({
       mediaType: 'video',
+      compressVideoPreset: 'Passthrough',
     }).then((video: {path: string}) => {
       callback(video.path);
     });

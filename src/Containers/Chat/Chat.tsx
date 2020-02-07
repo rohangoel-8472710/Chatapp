@@ -24,24 +24,34 @@ import Colors from '../../Constants/Colors';
 import Strings from '../../Constants/Strings';
 import {vw, vh} from '../../Constants/Dimensions';
 import {ImagePicker} from '../../Components';
+import Video from 'react-native-video';
 export interface Props {
-  navigation: any;
+  navigation?: any;
   user: any;
   addImages: Function;
-  images: any;
+  images: Array<any>;
   showFooter: boolean;
-  updateFooter: Function;
+  showingFooter: Function;
   removeImages: Function;
+  hideFooter: Function;
+  clearImages: Function;
+  changeCurrentImage: Function;
+  currentImg: string;
+  addVideo: Function;
+  removeVideo: Function;
+  videoURL: string;
+  uploadAndSendVideo: Function;
 }
 interface State {
   messages: any;
   lastMsg: string;
   isTyping: boolean;
   allGroupUsers: Array<any>;
-  source: string;
+  // source: string;
   loadState: boolean;
   multiplesource: Array<string>;
   sendingSource: string;
+  showFooter: boolean;
 }
 
 var counter: number = 1;
@@ -55,10 +65,11 @@ export default class Chat extends Component<Props, State> {
       lastMsg: '',
       isTyping: false,
       allGroupUsers: [],
-      source: '',
+      // source: '',
       loadState: false,
       multiplesource: [],
       sendingSource: '',
+      showFooter: false,
     };
   }
   componentDidMount() {
@@ -172,44 +183,18 @@ export default class Chat extends Component<Props, State> {
     );
   };
 
-  // uploadImage = (img: string) => {
-  //   Firebaseservices.uploadMsgPic(img, (url: string) => {
-  //     this.setState(
-  //       {
-  //         source: url,
-  //       },
-  //       () => this.giftedChatRef.onSend({text: ''}, true),
-  //     );
-  //   });
-  // };
-
-  // singleImagePicker = () => {
-  //   ImagePicker.GetPic((response: string) => {
-  //     this.uploadImage(response);
-  //   });
-  // };
-
-  uploadImage = () => {
-    // console.warn('Image');
-    this.props.images.map((obj: any) => {
-      if (
-        obj.roomID === this.props.navigation.getParam('roomID') &&
-        obj.userID === this.props.user.key
-      ) {
-        Firebaseservices.uploadMsgPic(obj.img, (url: string, name: string) => {
-          this.setState(
-            {
-              sendingSource: url,
-            },
-            () => {
-              this.props.updateFooter(),
-                this.giftedChatRef.onSend({text: ''}, true),
-                this.props.removeImages();
-            },
-          );
-        });
-      }
-    });
+  uploadImage = (url: string) => {
+    this.setState(
+      {
+        sendingSource: url,
+      },
+      () => {
+        this.props.hideFooter();
+        this.setState({showFooter: false});
+        this.giftedChatRef.onSend({text: ''}, true),
+          this.props.removeImages(() => {});
+      },
+    );
   };
 
   multipleImagePicker = () => {
@@ -221,24 +206,47 @@ export default class Chat extends Component<Props, State> {
           userID: this.props.user.key,
         };
         this.props.addImages(obj);
-        // console.warn('added');
         if (
           obj.roomID === this.props.navigation.getParam('roomID') &&
           obj.userID === this.props.user.key
         ) {
-          this.setState(
-            {
-              source: obj.img,
-            },
-            () => {
-              this.props.updateFooter();
-              this.refOn();
-              // console.warn('upload');
-              this.uploadImage();
-            },
-          );
+          this.props.changeCurrentImage(obj.img, () => {
+            this.props.showingFooter();
+            this.refOn();
+            Firebaseservices.uploadMsgPic(
+              this.props.currentImg,
+              (url: string, name: string) => {
+                this.uploadImage(url);
+              },
+            );
+          });
         }
       });
+    });
+  };
+
+  VideoPicker = () => {
+    ImagePicker.getVideo((response: any) => {
+      var obj = {
+        video: response,
+        roomID: this.props.navigation.getParam('roomID'),
+        userID: this.props.user.key,
+      };
+      this.props.addVideo(obj);
+      this.props.showingFooter();
+      this.setState({showFooter: true});
+      this.refOn();
+      this.props.uploadAndSendVideo(
+        this.props.navigation.getParam('roomID'),
+        this.props.user.key,
+        this.giftedChatRef,
+        () => {
+          this.props.hideFooter();
+          this.setState({showFooter: false});
+          this.refOn();
+          this.props.removeVideo();
+        },
+      );
     });
   };
 
@@ -324,7 +332,7 @@ export default class Chat extends Component<Props, State> {
   renderFooter = () => {
     return this.props.showFooter ? (
       <View style={styles.imgfooter}>
-        <Image source={{uri: this.state.source}} style={styles.sendimg} />
+        <Image source={{uri: this.props.currentImg}} style={styles.sendimg} />
         <ActivityIndicator
           animating={true}
           size="large"
@@ -334,6 +342,15 @@ export default class Chat extends Component<Props, State> {
       </View>
     ) : (
       <></>
+    );
+  };
+
+  renderMessagevideo = (props: any) => {
+    return (
+      <Video
+        source={{uri: this.props.videoURL}}
+        style={styles.backgroundVideo}
+      />
     );
   };
 
@@ -366,11 +383,12 @@ export default class Chat extends Component<Props, State> {
               ) : null}
             </View>
           </View>
-          <View style={styles.cameraIcon}>
+          <View style={styles.headerView}>
             <VectorIcons.FontAwesome
               name="camera"
               size={vw(25)}
               color={Colors.greyishBrown}
+              style={styles.cameraIcon}
               onPress={() => {
                 Alert.alert(
                   'Pick Image From',
@@ -381,6 +399,26 @@ export default class Chat extends Component<Props, State> {
                       onPress: () => this.multipleImagePicker(),
                     },
                     {text: 'Cancel', onPress: () => console.log('cancelled')},
+                  ],
+                  {cancelable: true},
+                );
+              }}
+            />
+            <VectorIcons.Entypo
+              name="video-camera"
+              size={vw(25)}
+              color={Colors.greyishBrown}
+              style={styles.cameraIcon}
+              onPress={() => {
+                Alert.alert(
+                  'Pick Video From',
+                  '',
+                  [
+                    {
+                      text: 'Gallery',
+                      onPress: () => this.VideoPicker(),
+                    },
+                    {text: 'Cancel', onPress: () => console.log('Cancelled')},
                   ],
                   {cancelable: true},
                 );
@@ -411,6 +449,7 @@ export default class Chat extends Component<Props, State> {
           loadEarlier={this.state.loadState}
           onLoadEarlier={this.loadMsgs}
           renderFooter={this.renderFooter}
+          renderMessageVideo={this.renderMessagevideo}
         />
       </SafeAreaView>
     );
