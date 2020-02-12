@@ -11,7 +11,6 @@ import {
   addVideo,
   removeVideo,
   uploadAndSendVideo,
-  uploadAndSend,
 } from '../../Modules/Chat/Action';
 const mapDispatchToProps = (dispatch: Function) => ({
   isTyping: () => dispatch(isTyping()),
@@ -23,7 +22,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
   changeCurrentImage: (value: string, callback: Function) =>
     dispatch(changeCurrentImage(value, callback)),
   addVideo: (data: any) => dispatch(addVideo(data)),
-  removeVideo: () => dispatch(removeVideo()),
+  removeVideo: (callback: Function) => dispatch(removeVideo(callback)),
   uploadAndSendVideo: (
     roomID: string,
     userID: string,
@@ -32,7 +31,15 @@ const mapDispatchToProps = (dispatch: Function) => ({
   ) => dispatch(uploadAndSendVideo(roomID, userID, ref, callback)),
 });
 const mapStateToProps = (state: any) => {
-  const {isTyping, images, showFooter, currentImg, videoURL} = state.Chat;
+  const {
+    isTyping,
+    images,
+    showFooter,
+    currentImg,
+    videoURL,
+    currentVideo,
+    sendingVideoURL,
+  } = state.Chat;
   const {user} = state.Chatlist;
   return {
     user,
@@ -41,6 +48,8 @@ const mapStateToProps = (state: any) => {
     showFooter,
     currentImg,
     videoURL,
+    currentVideo,
+    sendingVideoURL,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

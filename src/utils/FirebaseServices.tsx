@@ -18,15 +18,15 @@ class Firebaseservices {
     if (!firebase.apps.length) {
       firebase.initializeApp(
         {
-          apiKey: 'AIzaSyCBiaFwVmwnWMq6QoOqoGJzf9vjmNbVpAQ',
+          apiKey: 'AIzaSyDcaIGCnagjv9qNWHnAu-BzFShjZK9S7Iw',
           appId:
             Platform.OS === 'ios'
-              ? '1:818867633608:ios:b429dc2d725209db0e14fd'
+              ? '1:120970505723:ios:66b87f751411ce9d7eaf5e'
               : '1:120970505723:android:9ea038a72e182e167eaf5e',
-          databaseURL: 'https://react-native-e8dab.firebaseio.com',
-          messagingSenderId: '818867633608',
-          projectId: 'react-native-e8dab',
-          storageBucket: 'react-native-e8dab.appspot.com',
+          databaseURL: 'https://chatapplication-56657.firebaseio.com',
+          messagingSenderId: '120970505723',
+          projectId: 'chatapplication-56657',
+          storageBucket: 'chatapplication-56657.appspot.com',
         },
         'chatapplication',
       );

@@ -7,6 +7,9 @@ import {
   HIDE_FOOTER,
   CURRENT_IMAGE,
   URL_VIDEO,
+  ADD_VIDEO,
+  CURRENT_VIDEO,
+  URL_IMAGE,
 } from './Type';
 const initialState = {
   isTyping: false,
@@ -14,6 +17,9 @@ const initialState = {
   showFooter: false,
   currentImg: '',
   videoURL: '',
+  currentVideo: '',
+  sendinVideoURL: '',
+  sendinURL: '',
 };
 
 const Reducer = (state = initialState, action: any) => {
@@ -36,7 +42,16 @@ const Reducer = (state = initialState, action: any) => {
       return {...state, images: action.payload.data};
     }
     case URL_VIDEO: {
+      return {...state, sendinVideoURL: action.payload.data};
+    }
+    case ADD_VIDEO: {
       return {...state, videoURL: action.payload.data};
+    }
+    case CURRENT_VIDEO: {
+      return {...state, currentVideo: action.payload.data};
+    }
+    case URL_IMAGE: {
+      return {...state, sendinURL: action.payload.data};
     }
     default:
       return state;

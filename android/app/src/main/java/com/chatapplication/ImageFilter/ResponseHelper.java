@@ -1,4 +1,4 @@
-package ImageFilter;
+package com.chatapplication.ImageFilter;
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Arguments;

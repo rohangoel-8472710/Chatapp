@@ -6,3 +6,6 @@ export const CLEAR_PICS = 'Chat/CLEAR_PICS';
 export const HIDE_FOOTER = 'Chat/HIDE_FOOTER';
 export const CURRENT_IMAGE = 'Chat/CURRENT_IMAGE';
 export const URL_VIDEO = 'Chat/URL_VIDEO';
+export const ADD_VIDEO = 'Chat/ADD_VIDEO';
+export const CURRENT_VIDEO = 'Chat/CURRENT_VIDEO';
+export const URL_IMAGE = "Chat/URL_IMAGE";

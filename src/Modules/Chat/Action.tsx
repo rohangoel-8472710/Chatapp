@@ -7,6 +7,9 @@ import {
   HIDE_FOOTER,
   CURRENT_IMAGE,
   URL_VIDEO,
+  ADD_VIDEO,
+  CURRENT_VIDEO,
+  URL_IMAGE,
 } from './Type';
 import Firebaseservices from '../../utils/FirebaseServices';
 
@@ -62,13 +65,17 @@ export const changeCurrentImage = (image: string, callback: Function) => {
 
 export const addVideo = (values: Object) => {
   return (dispatch: any) => {
-    dispatch({type: URL_VIDEO, payload: {data: values}});
+    dispatch({type: ADD_VIDEO, payload: {data: values}});
   };
 };
 
-export const removeVideo = () => {
+export const removeVideo = (callback: Function) => {
   return (dispatch: any) => {
     dispatch({type: URL_VIDEO, payload: {data: ''}});
+    dispatch({type: ADD_VIDEO, payload: {data: ''}});
+    if (callback) {
+      callback();
+    }
   };
 };
 
@@ -81,7 +88,7 @@ export const uploadAndSendVideo = (
   return (dispatch: any, getState: any) => {
     const {videoURL} = getState().Chat;
     if (videoURL.roomID === roomID && videoURL.userID === userID) {
-      dispatch({type: CURRENT_IMAGE, payload: {data: videoURL.video}});
+      dispatch({type: CURRENT_VIDEO, payload: {data: videoURL.video}});
       Firebaseservices.uploadMsgVideo(
         videoURL.video,
         (url: string, name: string) => {

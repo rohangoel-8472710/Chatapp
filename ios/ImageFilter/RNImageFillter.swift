@@ -34,7 +34,7 @@ class RNImageFilter: NSObject {
     }
   }
   
-  
+    @objc  static func requiresMainQueueSetup() -> Bool {     return true   }
   
   
   
@@ -47,6 +47,7 @@ class RNImageFilter: NSObject {
     switch  self.FillterType {
       
     case 0:
+      print("data ", infoDictionary["imageSource"] ?? "not available")
       load(fileName: infoDictionary["imageSource"] as! String,completion:{ result in
         let coreImage = CIImage(image: result)
         self.returnAbleImage = CIFilter.additionCompositing(inputImage: coreImage!)

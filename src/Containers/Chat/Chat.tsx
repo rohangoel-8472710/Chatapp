@@ -41,6 +41,8 @@ export interface Props {
   removeVideo: Function;
   videoURL: string;
   uploadAndSendVideo: Function;
+  currentVideo: string;
+  sendingVideoURL: string;
 }
 interface State {
   messages: any;
@@ -330,25 +332,55 @@ export default class Chat extends Component<Props, State> {
   };
 
   renderFooter = () => {
-    return this.props.showFooter ? (
-      <View style={styles.imgfooter}>
-        <Image source={{uri: this.props.currentImg}} style={styles.sendimg} />
-        <ActivityIndicator
-          animating={true}
-          size="large"
-          color={Colors.Green}
-          style={styles.indicator}
-        />
-      </View>
-    ) : (
-      <></>
+    let arr = this.props.images.filter(
+      (item: any) =>
+        item.roomID === this.props.navigation.getParam('roomID') &&
+        item.userID === this.props.user.key,
     );
+    if (arr.length !== 0) {
+      return this.props.showFooter && this.state.showFooter ? (
+        <View style={styles.imgfooter}>
+          <Image source={{uri: this.props.currentImg}} style={styles.sendimg} />
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color={Colors.Green}
+            style={styles.indicator}
+          />
+        </View>
+      ) : (
+        <></>
+      );
+    } else if (
+      this.props.videoURL !== '' &&
+      this.props.videoURL.roomID === this.props.navigation.getParam('roomID') &&
+      this.props.videoURL.userID === this.props.user.key
+    ) {
+      return this.props.showFooter && this.state.showFooter ? (
+        <View style={styles.imgfooter}>
+          <Image
+            source={{uri: this.props.currentVideo}}
+            style={styles.sendimg}
+          />
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color={Colors.Green}
+            style={styles.indicator}
+          />
+        </View>
+      ) : (
+        <></>
+      );
+    } else {
+      return null;
+    }
   };
 
   renderMessagevideo = (props: any) => {
     return (
       <Video
-        source={{uri: this.props.videoURL}}
+        source={{uri: props.currentMessage.video}}
         style={styles.backgroundVideo}
       />
     );
@@ -432,7 +464,11 @@ export default class Chat extends Component<Props, State> {
           }}
           messages={this.state.messages}
           onSend={messages =>
-            Firebaseservices.send(messages, this.state.sendingSource)
+            Firebaseservices.send(
+              messages,
+              this.state.sendingSource,
+              this.props.sendingVideoURL,
+            )
           }
           user={this.user}
           renderSend={this.rendersend}
