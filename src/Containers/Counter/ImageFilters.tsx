@@ -26,10 +26,10 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
   }
 
   imageFillter = async (i: number) => {
-    console.warn('ok');
+    // console.warn('ok');
 
     let result = await new Promise((resolve, reject) => {
-      console.warn('filter=>', i);
+      // console.warn('filter=>', i);
 
       NativeModules.RNImageFilter.getSourceImage(
         {
@@ -39,7 +39,7 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
         },
         (source: any) => {
           resolve(source.base64);
-          console.warn('ImageFIlter->', source);
+          // console.warn('ImageFIlter->', source);
         },
       );
     });
@@ -55,7 +55,7 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
   };
 
   FilterImage = async () => {
-    console.warn('img ', this.state.imgSource);
+    // console.warn('img ', this.state.imgSource);
     if (!this.state.imgSource) {
       alert('Please choose image');
     } else {
@@ -65,7 +65,7 @@ export default class AppComponent extends React.Component<AppProps, AppState> {
         tempArray.push({
           FillterImage: Platform.OS === 'ios' ? data : 'file://' + data,
         });
-        console.warn('filterimage', this.FilterImage);
+        // console.warn('filterimage', this.FilterImage);
       }
 
       this.setState(

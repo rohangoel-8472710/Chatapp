@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.chatapplication.ImageFilter.RNImageFilterPackage;
+import com.chatapplication.TextRecognition.TRPackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new  RNFirebaseAuthPackage());
             packages.add(new ToastPackage());
             packages.add(new RNImageFilterPackage());
+            packages.add(new TRPackage());
           return packages;
         }
 

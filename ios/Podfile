@@ -40,6 +40,12 @@ target 'ChatApplication' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
+  pod 'Firebase/MLVision'
+# If using an on-device API:
+pod 'Firebase/MLVisionTextModel'
+pod 'Firebase/MLNaturalLanguage'
+pod 'Firebase/MLNLLanguageID'
+pod 'Firebase/MLNLTranslate'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 

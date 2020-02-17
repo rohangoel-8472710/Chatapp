@@ -8,6 +8,7 @@ import Group from '../src/Containers/GroupChat/index';
 import Counter from '../src/Containers/Counter/Counter';
 import ImageFilters from '../src/Containers/Counter/ImageFilters';
 import Toast from '../src/Containers/Counter/Toast';
+import Text from '../src/Containers/MLKit/TextRecognition/Text';
 const AppNavigator = createStackNavigator(
   {
     Signin: Signin,
@@ -18,12 +19,14 @@ const AppNavigator = createStackNavigator(
     Counter: Counter,
     ImageFilters: ImageFilters,
     Toast: Toast,
+    Text: Text,
   },
   {
     // initialRouteName: 'Signin',
     // initialRouteName: 'Counter',
-    initialRouteName: 'ImageFilters',
+    // initialRouteName: 'ImageFilters',
     // initialRouteName: 'Toast',
+    initialRouteName: 'Text',
     defaultNavigationOptions: {
       headerShown: false,
     },

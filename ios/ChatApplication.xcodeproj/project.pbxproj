@@ -21,6 +21,8 @@
 		8481D32723F11E7A006324B8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8481D32623F11E7A006324B8 /* GoogleService-Info.plist */; };
 		8481D32A23F12B31006324B8 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8481D32923F12B31006324B8 /* Counter.swift */; };
 		8481D32C23F12C29006324B8 /* Counter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8481D32B23F12C29006324B8 /* Counter.m */; };
+		849767EA23FA5D5D00EA59D5 /* TextRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849767E923FA5D5D00EA59D5 /* TextRecognition.swift */; };
+		849767EC23FA5D8900EA59D5 /* TextRecognition.m in Sources */ = {isa = PBXBuildFile; fileRef = 849767EB23FA5D8900EA59D5 /* TextRecognition.m */; };
 		84C8D09323F29482009C2ACF /* RNImageFillter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C8D09223F29482009C2ACF /* RNImageFillter.m */; };
 		84C8D09523F2B5DD009C2ACF /* RNImageFillter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C8D09423F2B5DD009C2ACF /* RNImageFillter.swift */; };
 		859FC939F0B386F920BD84EF /* libPods-ChatApplicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A2A66A8EF95C6978427C4D /* libPods-ChatApplicationTests.a */; };
@@ -75,6 +77,8 @@
 		8481D32823F12B31006324B8 /* ChatApplication-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChatApplication-Bridging-Header.h"; sourceTree = "<group>"; };
 		8481D32923F12B31006324B8 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		8481D32B23F12C29006324B8 /* Counter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Counter.m; sourceTree = "<group>"; };
+		849767E923FA5D5D00EA59D5 /* TextRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecognition.swift; sourceTree = "<group>"; };
+		849767EB23FA5D8900EA59D5 /* TextRecognition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextRecognition.m; sourceTree = "<group>"; };
 		84C8D09223F29482009C2ACF /* RNImageFillter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNImageFillter.m; sourceTree = "<group>"; };
 		84C8D09423F2B5DD009C2ACF /* RNImageFillter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNImageFillter.swift; sourceTree = "<group>"; };
 		908A639BCFE94EE884E1342A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				849767E823FA5C3A00EA59D5 /* TextRecogition */,
 				84C8D08E23F2945F009C2ACF /* ImageFilter */,
 				13B07FAE1A68108700A75B9A /* ChatApplication */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -213,6 +218,15 @@
 				2D02E4901E0B4A5D006451C7 /* ChatApplication-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		849767E823FA5C3A00EA59D5 /* TextRecogition */ = {
+			isa = PBXGroup;
+			children = (
+				849767E923FA5D5D00EA59D5 /* TextRecognition.swift */,
+				849767EB23FA5D8900EA59D5 /* TextRecognition.m */,
+			);
+			path = TextRecogition;
 			sourceTree = "<group>";
 		};
 		84C8D08E23F2945F009C2ACF /* ImageFilter */ = {
@@ -508,6 +522,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ChatApplication/Pods-ChatApplication-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLNLTranslate/FirebaseMLNLTranslate_resource.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionTextModel/GoogleMVTextDetectorResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -530,6 +546,8 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseMLNLTranslate_resource.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMVTextDetectorResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
@@ -653,6 +671,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				84C8D09323F29482009C2ACF /* RNImageFillter.m in Sources */,
+				849767EA23FA5D5D00EA59D5 /* TextRecognition.swift in Sources */,
+				849767EC23FA5D8900EA59D5 /* TextRecognition.m in Sources */,
 				8481D32C23F12C29006324B8 /* Counter.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
