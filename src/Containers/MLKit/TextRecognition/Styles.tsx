@@ -6,30 +6,42 @@ const Styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: vw(30),
   },
   Text: {
     textAlign: 'center',
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     fontSize: vw(17),
   },
-  newView: {
+  resultText: {
+    alignSelf: 'center',
+    color: Colors.Green,
+  },
+  upperView: {
+    flex: 0.45,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  resultTextView: {
+    borderWidth: vw(2),
+    borderColor: Colors.tealBlue,
+    padding: vw(20),
+    width: vw(350),
+    borderRadius: vw(10),
+  },
+  lowerView: {
+    flex: 0.55,
+  },
+  ButtonView: {
     padding: vw(10),
     margin: vw(20),
     width: vw(150),
-    height: vw(100),
+    height: vw(80),
     borderRadius: vw(15),
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-  },
-  resultText: {
-    borderWidth: vw(2),
-    padding: vw(20),
-    borderRadius: vw(10),
-    width: vw(350),
-    alignSelf: 'center',
-    color: Colors.Green,
   },
 });
 export default Styles;

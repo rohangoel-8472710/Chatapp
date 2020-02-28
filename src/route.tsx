@@ -9,6 +9,8 @@ import Counter from '../src/Containers/Counter/Counter';
 import ImageFilters from '../src/Containers/Counter/ImageFilters';
 import Toast from '../src/Containers/Counter/Toast';
 import Text from '../src/Containers/MLKit/TextRecognition/Text';
+import Splash from '../src/Containers/Login/Splash';
+import Privacy from '../src/Containers/Privacy';
 const AppNavigator = createStackNavigator(
   {
     Signin: Signin,
@@ -20,13 +22,15 @@ const AppNavigator = createStackNavigator(
     ImageFilters: ImageFilters,
     Toast: Toast,
     Text: Text,
+    Splash:Splash,
+    Privacy:Privacy
   },
   {
     // initialRouteName: 'Signin',
     // initialRouteName: 'Counter',
     // initialRouteName: 'ImageFilters',
     // initialRouteName: 'Toast',
-    initialRouteName: 'Text',
+    initialRouteName: 'Privacy',
     defaultNavigationOptions: {
       headerShown: false,
     },

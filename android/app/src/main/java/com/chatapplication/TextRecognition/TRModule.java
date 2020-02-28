@@ -1,7 +1,7 @@
 package com.chatapplication.TextRecognition;
 
 import android.net.Uri;
-import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -70,6 +70,7 @@ public class TRModule extends ReactContextBaseJavaModule {
                                         public void onFailure(@NonNull Exception e) {
                                             // Task failed with an exception
                                             // ...
+                                            Toast.makeText(getReactApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
                                             callback.invoke("");
                                         }
                                     });
@@ -77,7 +78,73 @@ public class TRModule extends ReactContextBaseJavaModule {
 
 
         } catch (Exception ex) {
-            Log.e("ERR", ex.getMessage());
+            Toast.makeText(getReactApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT);
+            callback.invoke("");
+        }
+
+    }
+    @ReactMethod
+    public void translate(final ReadableMap options, final Callback callback) {
+        try {
+
+            this.options = options;
+
+            int languageCode = (int)(options.getDouble(LANGUAGE));
+
+            // Create an English to any other language translator:
+            FirebaseTranslatorOptions option =
+                    new FirebaseTranslatorOptions.Builder()
+                            .setSourceLanguage(FirebaseTranslateLanguage.EN)
+                            .setTargetLanguage(languageCode)
+                            .build();
+
+            final FirebaseTranslator englishTranslator =
+                    FirebaseNaturalLanguage.getInstance().getTranslator(option);
+
+            FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
+                    .build();
+            englishTranslator.downloadModelIfNeeded(conditions)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void v) {
+                                    // Model downloaded successfully. Okay to start translating.
+                                    // (Set a flag, unhide the translation UI, etc.)
+                                    englishTranslator.translate(options.getString(IMAGE_SOURCE))
+                                            .addOnSuccessListener(
+                                                    new OnSuccessListener<String>() {
+                                                        @Override
+                                                        public void onSuccess(@NonNull String translatedText) {
+                                                            // Translation successful.
+                                                            callback.invoke(translatedText);
+                                                        }
+                                                    })
+                                            .addOnFailureListener(
+                                                    new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            // Error.
+                                                            // ...
+                                                            Toast.makeText(getReactApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
+                                                            callback.invoke("");
+                                                        }
+                                                    });
+                                }
+                            })
+                    .addOnFailureListener(
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Model couldn’t be downloaded or other internal error.
+                                    // ...
+                                    Toast.makeText(getReactApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
+                                    callback.invoke("");
+                                }
+                            });
+
+        } catch (Exception ex) {
+            Toast.makeText(getReactApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT);
+            callback.invoke("");
         }
 
     }

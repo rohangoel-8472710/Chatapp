@@ -11,7 +11,9 @@ const Images = {
   PLUS: require('../Assets/Images/plus.png'),
   MINUS: require('../Assets/Images/minus.png'),
   SEND: require('../Assets/Images/icSend.png'),
-  Check:require('../Assets/Images/icCheckGreen.png')
+  Check:require('../Assets/Images/icCheckGreen.png'),
+  facebook:require('../Assets/Images/facebook.png'),
+  google:require('../Assets/Images/google.png')
 };
 
 export default Images;
