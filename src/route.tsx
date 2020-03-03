@@ -28,11 +28,7 @@ const AppNavigator = createStackNavigator(
     Test: Test,
   },
   {
-    // initialRouteName: 'Signin',
-    // initialRouteName: 'Counter',
-    // initialRouteName: 'ImageFilters',
-    // initialRouteName: 'Toast',
-    initialRouteName: 'Splash',
+    initialRouteName: 'Test',
     defaultNavigationOptions: {
       headerShown: false,
     },
