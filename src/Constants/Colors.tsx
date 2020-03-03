@@ -19,6 +19,7 @@ const Colors = {
   white: '#f8f8f8',
   lightgrey: '#9d9d9d',
   lightestgrey: 'rgba(0, 0, 0, 0.1)',
+  inputgrey:'#dadada'
 };
 
 export default Colors;

@@ -5,44 +5,101 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  TouchableOpacity,
+  Platform,
+  LayoutAnimation,
+  UIManager,
 } from 'react-native';
 import {vw, vh} from '../../Constants/Dimensions';
 import Colors from '../../Constants/Colors';
 import Images from '../../Constants/Images';
 import CommonContinueButton from '../../Components/CommonContinueButton';
-export default class Splash extends Component {
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+interface Props {
+  animatedPaddingMobile: number;
+  Border: number;
+}
+
+interface State {
+  animatedPaddingMobile: number;
+  Border: number;
+}
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
+
+export default class Splash extends Component<State, Props> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      animatedPaddingMobile: vw(30),
+      Border: 0,
+    };
+  }
+
+  animatePadding = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    this.setState({animatedPaddingMobile: vw(10)});
+  };
   render() {
     return (
-      <View style={styles.parent}>
-        <Text style={styles.loginText}>LOGIN</Text>
-        <View style={styles.TextInputView}>
-          <TextInput
-            style={styles.input}
-            placeholder="MOBILE NUMBER"
-            placeholderTextColor={Colors.grey}
-          />
-        </View>
-        <View style={styles.continueButtonView}>
-          <CommonContinueButton />
-          <Text style={styles.continuingText}>
-            By continuing, I agree to{' '}
-            <Text style={styles.privacyText}>PRIVACY POLICY</Text>
+      <KeyboardAwareScrollView>
+        <View style={styles.parent}>
+          <Text style={styles.loginText}>LOGIN</Text>
+          <View
+            style={[
+              styles.TextInputView,
+              {paddingTop: this.state.animatedPaddingMobile},
+              {
+                borderColor:
+                  this.state.Border === 1 ? Colors.green : Colors.inputgrey,
+              },
+            ]}>
+            <Text
+              style={{
+                color: Colors.grey,
+                fontSize: vw(15),
+                fontWeight: '500',
+              }}>
+              MOBILE NUMBER
+            </Text>
+            <TextInput
+              style={[styles.input]}
+              onFocus={() => {
+                this.animatePadding();
+                this.setState({Border: 1});
+              }}
+              onBlur={() => {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+                this.setState({animatedPaddingMobile: vw(40)});
+                this.state.animatedPaddingMobile;
+                this.setState({Border: 0});
+              }}
+            />
+          </View>
+          <View style={styles.continueButtonView}>
+            <CommonContinueButton />
+            <Text style={styles.continuingText}>
+              By continuing, I agree to{' '}
+              <Text style={styles.privacyText}>PRIVACY POLICY</Text>
+            </Text>
+          </View>
+          <View style={styles.middleView}>
+            <View style={styles.border} />
+            <Text style={styles.orText}>OR</Text>
+            <View style={styles.border} />
+          </View>
+          <View style={styles.buttonView}>
+            <Image style={styles.imgStyle} source={Images.facebook} />
+            <Image style={styles.imgStyle} source={Images.google} />
+          </View>
+          <Text style={styles.newText}>
+            New at Seniority? <Text style={styles.signUpText}>SIGN UP</Text>
           </Text>
         </View>
-        <View style={styles.middleView}>
-          <View style={styles.border} />
-          <Text style={styles.orText}>OR</Text>
-          <View style={styles.border} />
-        </View>
-        <View style={styles.buttonView}>
-          <Image style={styles.imgStyle} source={Images.facebook} />
-          <Image style={styles.imgStyle} source={Images.google} />
-        </View>
-        <Text style={styles.newText}>
-          New at Seniority? <Text style={styles.signUpText}>SIGN UP</Text>
-        </Text>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -58,16 +115,14 @@ const styles = StyleSheet.create({
     marginTop: vh(90),
   },
   TextInputView: {
-    borderColor: 'grey',
     borderBottomWidth: 1,
     alignSelf: 'center',
-    marginTop: vh(60),
+    marginTop: vw(60),
     width: vw(274),
   },
   input: {
-    fontSize: vw(15),
-    fontWeight: '500',
-    marginBottom: vh(15),
+    backgroundColor: 'transparent',
+    padding: vw(5),
   },
   continueButtonView: {
     alignItems: 'center',

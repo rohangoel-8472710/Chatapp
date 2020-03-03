@@ -11,6 +11,7 @@ import Toast from '../src/Containers/Counter/Toast';
 import Text from '../src/Containers/MLKit/TextRecognition/Text';
 import Splash from '../src/Containers/Login/Splash';
 import Privacy from '../src/Containers/Privacy';
+import Test from '../src/Containers/Counter/Test';
 const AppNavigator = createStackNavigator(
   {
     Signin: Signin,
@@ -22,15 +23,16 @@ const AppNavigator = createStackNavigator(
     ImageFilters: ImageFilters,
     Toast: Toast,
     Text: Text,
-    Splash:Splash,
-    Privacy:Privacy
+    Splash: Splash,
+    Privacy: Privacy,
+    Test: Test,
   },
   {
     // initialRouteName: 'Signin',
     // initialRouteName: 'Counter',
     // initialRouteName: 'ImageFilters',
     // initialRouteName: 'Toast',
-    initialRouteName: 'Privacy',
+    initialRouteName: 'Splash',
     defaultNavigationOptions: {
       headerShown: false,
     },
