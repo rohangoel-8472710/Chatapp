@@ -11,9 +11,12 @@ const Images = {
   PLUS: require('../Assets/Images/plus.png'),
   MINUS: require('../Assets/Images/minus.png'),
   SEND: require('../Assets/Images/icSend.png'),
-  Check:require('../Assets/Images/icCheckGreen.png'),
-  facebook:require('../Assets/Images/facebook.png'),
-  google:require('../Assets/Images/google.png')
+  Check: require('../Assets/Images/icCheckGreen.png'),
+  facebook: require('../Assets/Images/facebook.png'),
+  google: require('../Assets/Images/google.png'),
+  cancel: require('../Assets/Images/cancel.png'),
+  arrow: require('../Assets/Images/fill-1-copy-32.png'),
+  medical: require('../Assets/Images/group-4_2.png'),
 };
 
 export default Images;

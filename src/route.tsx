@@ -12,6 +12,8 @@ import Text from '../src/Containers/MLKit/TextRecognition/Text';
 import Splash from '../src/Containers/Login/Splash';
 import Privacy from '../src/Containers/Privacy';
 import Test from '../src/Containers/Counter/Test';
+import ModalTester from '../src/Containers/Login/ModalTester';
+import Menu from '../src/Containers/Menu';
 const AppNavigator = createStackNavigator(
   {
     Signin: Signin,
@@ -26,9 +28,11 @@ const AppNavigator = createStackNavigator(
     Splash: Splash,
     Privacy: Privacy,
     Test: Test,
+    ModalTester: ModalTester,
+    Menu: Menu,
   },
   {
-    initialRouteName: 'Test',
+    initialRouteName: 'Menu',
     defaultNavigationOptions: {
       headerShown: false,
     },

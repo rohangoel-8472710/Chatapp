@@ -153,7 +153,7 @@ export default class Test extends Component<Props, State> {
             sections={data}
             touchableComponent={TouchableOpacity}
             renderHeader={this.renderHeader}
-            expandMultiple={true}
+            expandMultiple={false}
             renderContent={this.renderContent}
             duration={400}
             onChange={this.setSections}
