@@ -17,6 +17,10 @@ const Images = {
   cancel: require('../Assets/Images/cancel.png'),
   arrow: require('../Assets/Images/fill-1-copy-32.png'),
   medical: require('../Assets/Images/group-4_2.png'),
+  general: require('../Assets/Images/group-3.png'),
+  physio: require('../Assets/Images/group-3_2.png'),
+  leisure: require('../Assets/Images/group-4.png'),
+  logo:require('../Assets/Images/group.png')
 };
 
 export default Images;

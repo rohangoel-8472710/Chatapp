@@ -15,5 +15,13 @@ const Strings = {
   smart_living: 'SMART LIVING',
   kitchen_gardening: 'KITCHEN & GARDENING',
   food_diet: 'FOOD & DIET',
+  evergreen_rewards: 'EVERGREEN REWARDS',
+  new_arrivals: 'NEW ARRIVALS',
+  best_sellers: 'BEST SELLERS',
+  seniority_global: 'SENIORITY GLOBAL',
+  evergreen_brand: 'EVERGREEN BRAND',
+  offers: 'OFFERS',
+  myaccount: 'MYACCOUNT',
+  help: 'HELP',
 };
 export default Strings;
