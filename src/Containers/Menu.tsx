@@ -124,7 +124,9 @@ export default class Menu extends Component<Props, State> {
   render() {
     return (
       <SafeAreaView>
-        <ScrollView style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          showsVerticalScrollIndicator={false}>
           <FlatList
             bounces={false}
             data={data}

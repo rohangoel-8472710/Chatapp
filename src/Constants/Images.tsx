@@ -20,7 +20,10 @@ const Images = {
   general: require('../Assets/Images/group-3.png'),
   physio: require('../Assets/Images/group-3_2.png'),
   leisure: require('../Assets/Images/group-4.png'),
-  logo:require('../Assets/Images/group.png')
+  logo: require('../Assets/Images/group.png'),
+  welcomeseniority: require('../Assets/Images/group-6.png'),
+  evergreenimage: require('../Assets/Images/evergreen.png'),
+  blogimage: require('../Assets/Images/blog.png'),
 };
 
 export default Images;

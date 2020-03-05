@@ -23,5 +23,11 @@ const Strings = {
   offers: 'OFFERS',
   myaccount: 'MYACCOUNT',
   help: 'HELP',
+  welcome_to_senioroty: 'Welcome to Seniority',
+  live_evergreen: 'Live Evergreen',
+  blog: 'Blog',
+  welseniority: "India's largest online shopping destination for seniors ",
+  liveevergreentext:'Thoughtfully crafted products curated for all your daily needs',
+  blogtext: 'Listen to blog as podcast',
 };
 export default Strings;
