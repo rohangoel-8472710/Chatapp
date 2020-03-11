@@ -15,6 +15,7 @@ import Test from '../src/Containers/Counter/Test';
 import ModalTester from '../src/Containers/Login/ModalTester';
 import Menu from '../src/Containers/Menu';
 import Slider from '../src/Containers/Slider';
+import Profile from '../src/Containers/Profile';
 const AppNavigator = createStackNavigator(
   {
     Signin: Signin,
@@ -31,10 +32,11 @@ const AppNavigator = createStackNavigator(
     Test: Test,
     ModalTester: ModalTester,
     Menu: Menu,
-    Slider:Slider
+    Slider: Slider,
+    Profile: Profile,
   },
   {
-    initialRouteName: 'Slider',
+    initialRouteName: 'Profile',
     defaultNavigationOptions: {
       headerShown: false,
     },

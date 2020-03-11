@@ -24,6 +24,7 @@ const Images = {
   welcomeseniority: require('../Assets/Images/group-6.png'),
   evergreenimage: require('../Assets/Images/evergreen.png'),
   blogimage: require('../Assets/Images/blog.png'),
+  backarrow:require('../Assets/Images/back-copy.png')
 };
 
 export default Images;

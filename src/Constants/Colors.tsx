@@ -22,6 +22,7 @@ const Colors = {
   inputgrey: '#dadada',
   red: '#f96161',
   yellow: '#ffc107',
+  linkcolor: '#303030',
 };
 
 export default Colors;

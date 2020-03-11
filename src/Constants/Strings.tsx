@@ -27,7 +27,11 @@ const Strings = {
   live_evergreen: 'Live Evergreen',
   blog: 'Blog',
   welseniority: "India's largest online shopping destination for seniors ",
-  liveevergreentext:'Thoughtfully crafted products curated for all your daily needs',
+  liveevergreentext:
+    'Thoughtfully crafted products curated for all your daily needs',
   blogtext: 'Listen to blog as podcast',
+  myprofile: 'My Profile',
+  select_image: 'SELECT IMAGE',
+  link:'Link your social accounts'
 };
 export default Strings;
